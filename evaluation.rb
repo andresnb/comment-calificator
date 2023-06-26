@@ -1,4 +1,3 @@
-
 require_relative 'grade'
 require_relative 'cell'
 
@@ -26,15 +25,15 @@ class Evaluation
     total_header = get_header_data(matrix_array, keys)
     total_details = get_details_data(matrix_array, keys)
 
-    Grade.new(description: total_header["description"],
-                      max_score: total_header["max_score"],
-                      score: total_header["score"],
-                      details: total_details)
+    Grade.new(description: total_header['description'],
+              max_score: total_header['max_score'],
+              score: total_header['score'],
+              details: total_details)
   end
 
   def join_arrays(matrix)
     return if matrix.length == 1
-    
+
     first_array = matrix.shift
     second_array = matrix.shift
 
@@ -54,7 +53,7 @@ class Evaluation
     keys.each_with_index do |key, i|
       object[key] = array[0][i]
     end
-    
+
     object
   end
 
@@ -72,5 +71,4 @@ class Evaluation
 
     details
   end
-
 end

@@ -1,4 +1,3 @@
-
 require 'roo'
 
 class Cell
@@ -30,9 +29,9 @@ class Cell
   def self.separate_matrix(matrix, sheet)
     top_left, bottom_right = matrix.split(':')
     r, c = separate_coordinate(top_left)
-    top_left_cell = Cell.new(r,c, sheet)
+    top_left_cell = Cell.new(r, c, sheet)
     r, c = separate_coordinate(bottom_right)
-    bottom_right_cell = Cell.new(r,c, sheet)
+    bottom_right_cell = Cell.new(r, c, sheet)
 
     [top_left_cell, bottom_right_cell]
   end
@@ -126,7 +125,7 @@ class Cell
       left(col_move)
       down
     end
-    
+
     outer_matrix
   end
 
