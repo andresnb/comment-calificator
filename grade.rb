@@ -1,7 +1,8 @@
 class Grade
   attr_accessor :score, :details
 
-  def initialize(max_score = 0, score = 0, details = [])
+  def initialize(description: "", max_score: 0, score: 0, details: [])
+    @description = description
     @max_score = max_score
     @score = score
     @details = details

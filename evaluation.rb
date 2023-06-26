@@ -24,7 +24,12 @@ class Evaluation
     end
     matrix_array = join_arrays(matrix_array)
     total_header = get_header_data(matrix_array, keys)
-    # total_details = get_details_data(matrix_array, keys)
+    total_details = get_details_data(matrix_array, keys)
+
+    Grade.new(description: total_header["description"],
+                      max_score: total_header["max_score"],
+                      score: total_header["score"],
+                      details: total_details)
   end
 
   def join_arrays(matrix)
@@ -45,7 +50,7 @@ class Evaluation
 
   def get_header_data(array, keys)
     object = {}
-    
+
     keys.each_with_index do |key, i|
       object[key] = array[0][i]
     end
@@ -54,24 +59,18 @@ class Evaluation
   end
 
   def get_details_data(array, keys)
-    # p array
-  end
-  
+    details = []
+    details_array = array.drop(1)
 
-  def assign_dev_skills(detail_cell_init:, score_cell_init:, rows_range:)
-  end
+    details_array.each_with_index do |_detail, i|
+      object = {}
+      keys.each_with_index do |key, j|
+        object[key] = details_array[i][j]
+      end
+      details << object
+    end
 
-  def assign_user_stories(detail_cell_init:, score_cell_init:, rows_range:)
-  end
-
-  def assign_optionals(detail_cell_init:, score_cell_init:, rows_range:)
-  end
-
-  private
-
-  def get_rows_range(string)
-    init, final = string.split("-").map(&:to_i)
-    final - init + 1
+    details
   end
 
 end

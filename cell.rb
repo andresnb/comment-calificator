@@ -43,6 +43,31 @@ class Cell
     [column, row]
   end
 
+  def self.integer_to_letter(n)
+    result = []
+    quotient, remainder = (n - 1).divmod(26)
+
+    while quotient >= 0
+      result.unshift(('A'.ord + remainder).chr)
+      quotient, remainder = (quotient - 1).divmod(26)
+    end
+
+    result.join
+  end
+
+  def self.letter_to_integer(string)
+    string.upcase!
+    result = 0
+    base = 26
+
+    string.each_char do |char|
+      digit_value = char.ord - 'A'.ord + 1
+      result = (result * base) + digit_value
+    end
+
+    result
+  end
+
   def value
     return @sheet.cell(@column, @row) if @column.is_a?(String)
 

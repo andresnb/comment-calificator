@@ -15,16 +15,24 @@ def main
   keys = ["description", "max_score", "score"]
   total_students = evaluations.cell('C', 46)
   totals_matrix = "A5:B8"
-  totals_student = "C5:C8"
+  dev_skills_matrix = "A12:B16"
+  user_stories_matrix = "A18:B31"
+  optional_matrix = "A33:B37"
 
   (1..total_students).each do |_|
+    
     evaluation = Evaluation.new
+    totals_student = "C5:C8"
+    dev_skills_student = "C12:C16"
+    user_stories_student = "C18:C31"
+    optional_student = "C33:C37"
 
-    evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys, sheet: evaluations)
+    totals = evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys, sheet: evaluations)
+    dev_skills = evaluation.assign_totals(matrixes: [dev_skills_matrix, dev_skills_student], keys: keys, sheet: evaluations)
+    user_stories = evaluation.assign_totals(matrixes: [user_stories_matrix, user_stories_student], keys: keys, sheet: evaluations)
+    optional = evaluation.assign_totals(matrixes: [optional_matrix, optional_student], keys: keys, sheet: evaluations)
+
     break
-    evaluation.assign_dev_skills(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "12-16", sheet: evaluations)
-    evaluation.assign_user_stories(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "19-31")
-    evaluation.assign_optionals(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "34-37")
 
   end
 end
