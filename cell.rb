@@ -27,14 +27,30 @@ class Cell
     cell.dup
   end
 
+  def self.separate_matrix(matrix, sheet)
+    top_left, bottom_right = matrix.split(':')
+    r, c = separate_coordinate(top_left)
+    top_left_cell = Cell.new(r,c, sheet)
+    r, c = separate_coordinate(bottom_right)
+    bottom_right_cell = Cell.new(r,c, sheet)
+
+    [top_left_cell, bottom_right_cell]
+  end
+
+  def self.separate_coordinate(coordinate)
+    column = coordinate[/[A-Z]+/]
+    row = coordinate[/\d+/].to_i
+    [column, row]
+  end
+
   def value
     return @sheet.cell(@column, @row) if @column.is_a?(String)
 
     @sheet.cell(@row, @column)
   end
 
-  def up
-    @row -= 1 unless @row == 1
+  def up(step = 1)
+    @row -= 1 * step unless @row == 1
     self
   end
 
@@ -69,30 +85,33 @@ class Cell
     @column == other_cell.column && @row == other_cell.row
   end
 
-  def self.get_matrix_values(matrixes:, rows: 1)
-    values = []
-    rows.times do |_|
-      matrixes.each do |matrix|
-        c = 0
-        columns = matrix.columns
-        object = {}
-        values << matrix.cell.value
-        while columns > 1
-          matrix.cell.right
-          c += 1
-          columns -= 1
-          object[matrix.key[c]] << matrix.cell.value
-        end
-        matrix.cell.down
-        matrix.cell.left(c)
-      end
-      values << object
-    end
+  def create_matrix_array(final_cell)
+    outer_matrix = []
+    inner_matrix = []
+    col_move = column_difference(@column, final_cell.column) + 1
+    row_move = final_cell.row - @row + 1
 
-    values
+    col_move.times do |_|
+      row_move.times do |_|
+        inner_matrix << value
+        down
+      end
+      outer_matrix << inner_matrix
+      inner_matrix = []
+      up(row_move)
+      right
+    end
+    outer_matrix
   end
 
   private
+
+  def column_difference(col1, col2)
+    col1 = letter_to_integer(col1) if col1.is_a?(String)
+    col2 = letter_to_integer(col2) if col2.is_a?(String)
+
+    col2 - col1
+  end
 
   def current_cell
     return "#{@column}-#{@row}" if @column.is_a?(String)
