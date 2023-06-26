@@ -10,18 +10,17 @@ def main
   
 
   xlsx = Roo::Spreadsheet.open('input/W4-IE-CLIvia-Generator.xlsx')
-  evaluations =  xlsx.sheet('Evaluaciones')
+  evaluations = xlsx.sheet('Evaluaciones')
 
+  keys ["description", "max_score", "score"]
   total_students = evaluations.cell('C', 46)
-  details_cell = Cell.new('A', 5, evaluations)
-  score_cell = Cell.new('C', 5, evaluations)
-
-  max_eval = Evaluation.new
+  totals_matrix = "A5:B8"
+  totals_student = "C5:C8"
 
   (1..total_students).each do |_|
     evaluation = Evaluation.new
 
-    evaluation.assign_totals(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "5-8")
+    evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys)
     break
     evaluation.assign_dev_skills(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "12-16")
     evaluation.assign_user_stories(detail_cell_init: details_cell, score_cell_init: score_cell, rows_range: "19-31")

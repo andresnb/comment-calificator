@@ -76,7 +76,7 @@ class Cell
         c = 0
         columns = matrix.columns
         object = {}
-        object[matrix.key[c]] << matrix.cell.value
+        values << matrix.cell.value
         while columns > 1
           matrix.cell.right
           c += 1
