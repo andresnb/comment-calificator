@@ -91,16 +91,17 @@ class Cell
     col_move = column_difference(@column, final_cell.column) + 1
     row_move = final_cell.row - @row + 1
 
-    col_move.times do |_|
-      row_move.times do |_|
+    row_move.times do |_|
+      col_move.times do |_|
         inner_matrix << value
-        down
+        right
       end
       outer_matrix << inner_matrix
       inner_matrix = []
-      up(row_move)
-      right
+      left(col_move)
+      down
     end
+    
     outer_matrix
   end
 

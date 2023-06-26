@@ -20,24 +20,41 @@ class Evaluation
 
     matrix_array = []
     ranges_cells.each do |range_cells|
-      matrix_array += range_cells[0].create_matrix_array(range_cells[1])
+      matrix_array << range_cells[0].create_matrix_array(range_cells[1])
     end
-
+    matrix_array = join_arrays(matrix_array)
     total_header = get_header_data(matrix_array, keys)
     # total_details = get_details_data(matrix_array, keys)
   end
 
-  def get_header_data(array, keys)
-    object = {}
+  def join_arrays(matrix)
+    return if matrix.length == 1
+    
+    first_array = matrix.shift
+    second_array = matrix.shift
 
-    keys.each_with_index do |key, i|
-      object[key] = array[i][0]
+    first_array.each_with_index do |f, i|
+      f << second_array[i][0]
     end
 
-    p object
+    matrix.unshift(first_array)
+    join_arrays(matrix)
+
+    first_array
+  end
+
+  def get_header_data(array, keys)
+    object = {}
+    
+    keys.each_with_index do |key, i|
+      object[key] = array[0][i]
+    end
+    
+    object
   end
 
   def get_details_data(array, keys)
+    # p array
   end
   
 
