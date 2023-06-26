@@ -1,12 +1,12 @@
 
-require_relative 'grade'
+require_relative 'evaluation'
 
 class Student
-  attr_accessor :name, :aproved, :grade
+  attr_accessor :name, :aproved, :evaluation
 
-  def initialize(name: '', grade: 0, aproved: false)
+  def initialize(name: '', evaluation: Evaluation.new, aproved: false)
     @name = name
     @aproved = aproved
-    @grade = grade
+    @evaluation = evaluation
   end
 end
