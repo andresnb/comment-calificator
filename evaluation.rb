@@ -126,8 +126,8 @@ class Evaluation
                details: @optional.details.push(['TOTAL', [@optional.max_score, @optional.score]]))
     break_line(2)
     @text += bold('NOTES').to_s
-    break_line(2)
-    @text += print_notes(get_notes)
+    # break_line(2)
+    # @text += print_notes(get_notes)
   end
 
   private

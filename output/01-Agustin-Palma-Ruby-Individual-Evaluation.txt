@@ -112,6 +112,6 @@ To pass, the student needs at least 30.0 (**total of 50 points + 8 bonus points*
 
 **NOTES**
 
-- La entrega fue 1 dia pasado del deadline Junio 3 a las 11:59:59
-- La tabla scores NO esta ordenada de manera `DESC`
-- Muy buen proyecto! Buenas presentacion, felicidades!
+- Ultimo commit 1 dia despues del deadline Junio 3 - 11:59
+- La tabla de scores NO esta ordenada de forma `DESC`
+- Muy buen proyecto, Buenas animaciones y presentacion! Felicidades!
