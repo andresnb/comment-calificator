@@ -125,7 +125,7 @@ class Evaluation
     draw_table(header: [@optional.description, 'Max Score', 'Your Score'],
                details: @optional.details.push(['TOTAL', [@optional.max_score, @optional.score]]))
     break_line(2)
-    @text += bold('NOTES').to_s
+    # @text += bold('NOTES').to_s
     # break_line(2)
     # @text += print_notes(get_notes)
   end
