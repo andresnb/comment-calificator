@@ -17,8 +17,8 @@ def main
   optional_matrix = 'A33:B37'
   student_starter_column = Cell.letter_to_integer('C')
 
-  (1..total_students).each do |student|
-    step = student - 1
+  (1..total_students).each do |student_index|
+    step = student_index - 1
     student_column = student_starter_column + step
     evaluation = Evaluation.new('Ruby Individual Evaluation')
     student = Student.new
@@ -41,8 +41,7 @@ def main
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
 
-    puts evaluation.write_comment
-    break
+    create_evaluation_file(evaluation, student_index)
   end
 end
 
@@ -51,6 +50,16 @@ def get_cell_value(cell, sheet)
   row, col = cell.values_at(:row, :column) if cell.is_a?(Hash)
 
   sheet.cell(row, col.to_i)
+end
+
+def create_evaluation_file(evaluation, n)
+  file_path = "output/#{format('%02d',
+                               n)}-#{evaluation.student.name.gsub(' ', '-')}-#{evaluation.title.gsub(' ', '-')}.txt"
+  File.open(file_path, 'w') do |file|
+    file.puts evaluation.write_comment
+  end
+
+  puts "File '#{file_path}' created.\n"
 end
 
 main
