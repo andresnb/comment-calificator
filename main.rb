@@ -39,7 +39,7 @@ def main
                                                    sheet: evaluations)
 
     student.evaluation = evaluation
-    student.aproved = true if evaluation.total.score >= evaluation.total.max_score * APROVED_PERCENT
+    student.aproved = evaluation.aproved?
 
     pp student
   end

@@ -2,7 +2,9 @@ require_relative 'grade'
 require_relative 'cell'
 
 class Evaluation
-  attr_accessor :dev_skills, :user_stories, :optional, :total
+  attr_accessor :dev_skills, :user_stories, :optional, :total,
+                :title, :description, :scale, :aproval_percent,
+                :notes
 
   def initialize(title)
     @total = total
@@ -13,8 +15,11 @@ class Evaluation
     @description = load_description
     @scale = load_scale
     @aproval_percent = 0.6
-    @student = Student.new
     @notes = []
+  end
+
+  def aproved?
+    @total.score >= @total.max_score * @aproval_percent
   end
 
   def assign_totals(matrixes:, keys:, sheet:)
