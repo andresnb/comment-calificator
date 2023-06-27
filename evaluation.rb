@@ -142,7 +142,7 @@ class Evaluation
   end
 
   def get_notes
-    puts 'Give the students some insights, write a note!'
+    puts "Give #{@student.name} some insights, write some notes!"
     puts '>'
     input = gets(":q\n").chomp(":q\n")
     input.split("\n")
