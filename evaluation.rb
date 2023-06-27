@@ -18,6 +18,8 @@ class Evaluation
     @aproval_score = 0
     @notes = []
     @explanation = ''
+    @text = ''
+    @student = Student.new
   end
 
   def aproved?
@@ -87,6 +89,20 @@ class Evaluation
     details
   end
 
+  def write_comment
+    @text += @title
+    break_line
+    line
+    @text += @description
+    break_line
+    draw_table(header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
+               details: @scale)
+    break_line
+    @text += explanation
+    break_line
+    @text += "#{bold('STUDENT:')} #{@student.name.upcase}"
+  end
+
   private
 
   def load_description
@@ -98,44 +114,72 @@ class Evaluation
   end
 
   def load_scale
-    {
-      skills: [
-        {
-          name: 'Dev Skills',
-          metric: {
-            '0' => 'Not applied',
-            '1' => 'Barely applied',
-            '2' => 'Somewhat applied',
-            '3' => 'Decently applied',
-            '4' => 'Mostly applied',
-            '5' => 'Correctly applied'
-          }
-        },
-        {
-          name: 'User Stories',
-          metric: {
-            '0' => 'Not applied',
-            '1' => 'Applied but with glitches',
-            '2' => 'Correctly applied'
-          }
-        },
-        {
-          name: 'Critical User Stories',
-          metric: {
-            '0' => 'Not applied',
-            '1' => 'Applied but not working',
-            '2' => 'Applied but with glitches',
-            '3' => 'Correctly applied'
-          }
-        },
-        {
-          name: 'Non Critical Features',
-          metric: {
-            '0' => 'Not applied',
-            '1' => 'Applied'
-          }
-        }
-      ]
-    }
+    [[
+      'Dev Skills',
+      'Not applied',
+      'Barely applied',
+      'Somewhat applied',
+      'Decently applied',
+      'Mostly applied',
+      'Correctly applied'
+    ],
+     [
+       'User Stories',
+       'Not applied',
+       'Applied but with glitches',
+       'Correctly applied'
+     ],
+     [
+       'Critical User Stories',
+       'Not applied',
+       'Applied but not working',
+       'Applied but with glitches',
+       'Correctly applied'
+     ],
+     [
+       'Non Critical Features',
+       'Not applied',
+       'Applied'
+     ]]
+  end
+
+  def draw_table(header:, details:)
+    table = ''
+
+    table += add_table_bars(header)
+    table += table_pattern(header.length)
+    details.each do |detail|
+      table += add_table_bars(detail)
+    end
+
+    @text += table
+  end
+
+  def add_table_bars(array)
+    @text += "|#{array.join('|')}|\n"
+  end
+
+  def table_pattern(number)
+    pattern = ' -- |'
+    result = pattern * number
+    result[-1] = "\n"
+
+    @text += result
+  end
+
+  def last_element?(array, element)
+    array.index(element) == array.length - 1
+  end
+
+  def break_line
+    @text += "\n"
+  end
+
+  def bold(text)
+    "**#{text}**"
+  end
+
+  def line
+    @text += "--\n"
   end
 end

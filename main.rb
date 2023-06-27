@@ -38,10 +38,10 @@ def main
     evaluation.optional = evaluation.assign_totals(matrixes: [optional_matrix, optional_student], keys: keys,
                                                    sheet: evaluations)
 
-    student.evaluation = evaluation
-    student.aproved = evaluation.aproved?
+    evaluation.student = student
+    student.student.aproved = evaluation.aproved?
 
-    pp student
+    puts evaluation.write_comment
   end
 end
 

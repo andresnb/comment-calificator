@@ -6,6 +6,5 @@ class Student
   def initialize(name: '', evaluation: Evaluation.new, aproved: false)
     @name = name
     @aproved = aproved
-    @evaluation = evaluation
   end
 end
