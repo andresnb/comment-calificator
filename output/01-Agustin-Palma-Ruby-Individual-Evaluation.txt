@@ -112,5 +112,6 @@ To pass, the student needs at least 30.0 (**total of 50 points + 8 bonus points*
 
 **NOTES**
 
-- sadfasdf
-- sdfasf
+- La entrega fue 1 dia pasado del deadline Junio 3 a las 11:59:59
+- La tabla scores NO esta ordenada de manera `DESC`
+- Muy buen proyecto! Buenas presentacion, felicidades!
