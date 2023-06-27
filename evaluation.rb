@@ -101,48 +101,49 @@ class Evaluation
     line
     @text += @description
     break_line
-    draw_table( header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
-                details: @scale)
-    break_line
+    draw_table(header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
+               details: @scale)
+    break_line(2)
     @text += explanation
-    break_line
+    break_line(2)
     @text += "#{bold('STUDENT:')} #{@student.name.upcase}"
     break_line
     @text += "#{bold('RESULT:')} #{@aproved_text.upcase}"
+    break_line(2)
+    draw_table(header: ['Total', @total.score],
+               details: @total.details, remove: 2)
+    break_line(2)
+    @text += "#{bold('DETAILS')}"
     break_line
-    draw_table( header: ["Total", @total.score],
-                details: @total.details, remove: 2)
-    break_line
-    @text += "#{bold("DETAILS")}"
-    draw_table( header: [@dev_skills.description, "Max Score", "Your Score"],
-                details: @dev_skills.details.push(["TOTAL", [@dev_skills.max_score, @dev_skills.score]]))
-    break_line
-    draw_table( header: [@user_stories.description, "Max Score", "Your Score"],
-      details: @user_stories.details.push(["TOTAL", [@user_stories.max_score, @user_stories.score]]))
-    break_line
-    draw_table( header: [@optional.description, "Max Score", "Your Score"],
-      details: @optional.details.push(["TOTAL", [@optional.max_score, @optional.score]]))
-    break_line
-    @text += "#{bold("NOTES")}"
-    break_line
-    @text += print_notes(get_notes())
-        
+    draw_table(header: [@dev_skills.description, 'Max Score', 'Your Score'],
+               details: @dev_skills.details.push(['TOTAL', [@dev_skills.max_score, @dev_skills.score]]))
+    break_line(2)
+    draw_table(header: [@user_stories.description, 'Max Score', 'Your Score'],
+               details: @user_stories.details.push(['TOTAL',
+                                                    [@user_stories.max_score, @user_stories.score]]))
+    break_line(2)
+    draw_table(header: [@optional.description, 'Max Score', 'Your Score'],
+               details: @optional.details.push(['TOTAL', [@optional.max_score, @optional.score]]))
+    break_line(2)
+    @text += "#{bold('NOTES')}"
+    break_line(2)
+    @text += print_notes(get_notes)
   end
 
   private
 
   def print_notes(notes)
-    note_txt = ""
+    note_txt = ''
     notes.each do |note|
       note_txt += "- #{note}\n"
     end
-    
+
     @text += note_txt
   end
 
   def get_notes
-    puts "Give the students some insights, write a note!"
-    puts ">"
+    puts 'Give the students some insights, write a note!'
+    puts '>'
     input = gets(":q\n").chomp(":q\n")
     input.split("\n")
   end
@@ -189,13 +190,13 @@ class Evaluation
     table = ''
     table += add_table_bars(header)
     table += table_pattern(header.length)
-  
+
     details.each do |detail|
       detail = remove_element(detail, remove) if remove.positive?
       table += add_table_bars(detail)
     end
 
-    @text += table
+    @text += table.chop
   end
 
   def add_table_bars(array)
@@ -220,8 +221,13 @@ class Evaluation
     a
   end
 
-  def break_line
-    @text += "\n"
+  def break_line(n = 1)
+    br = ''
+    n.times do
+      br += "\n"
+    end
+
+    @text += br
   end
 
   def bold(text)
