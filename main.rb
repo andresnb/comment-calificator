@@ -39,7 +39,7 @@ def main
                                                    sheet: evaluations)
 
     evaluation.student = student
-    student.student.aproved = evaluation.aproved?
+    evaluation.student.aproved = evaluation.aproved?
 
     puts evaluation.write_comment
   end

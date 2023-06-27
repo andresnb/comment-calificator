@@ -1,10 +1,11 @@
 require_relative 'grade'
 require_relative 'cell'
+require_relative 'student'
 
 class Evaluation
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :description, :scale, :aproval_percent,
-                :notes, :aproval_score, :explanation
+                :notes, :aproval_score, :explanation, :student
 
   def initialize(title = '')
     @total = Grade.new
