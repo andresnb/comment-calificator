@@ -42,6 +42,7 @@ def main
     evaluation.student.aproved = evaluation.aproved?
 
     puts evaluation.write_comment
+    break
   end
 end
 

@@ -17,6 +17,7 @@ class Evaluation
     @scale = load_scale
     @aproval_percent = 0.6
     @aproval_score = 0
+    @aproved_text = 'NOT APROVED'
     @notes = []
     @explanation = ''
     @text = ''
@@ -26,6 +27,8 @@ class Evaluation
   def aproved?
     @aproval_score = @total.max_score * @aproval_percent
     @explanation = load_explanation
+    @aproved_text = 'APROVED' if @total.score >= @aproval_score
+
     @total.score >= @aproval_score
   end
 
@@ -96,12 +99,17 @@ class Evaluation
     line
     @text += @description
     break_line
-    draw_table(header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
-               details: @scale)
+    draw_table( header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
+                details: @scale)
     break_line
     @text += explanation
     break_line
     @text += "#{bold('STUDENT:')} #{@student.name.upcase}"
+    break_line
+    @text += "#{bold('RESULT:')} #{@aproved_text.upcase}"
+    break_line
+    draw_table( header: ["Total", @total.score],
+                details: @total.details)
   end
 
   private
@@ -145,8 +153,9 @@ class Evaluation
   end
 
   def draw_table(header:, details:)
+    p details.to_a
     table = ''
-
+    
     table += add_table_bars(header)
     table += table_pattern(header.length)
     details.each do |detail|
@@ -157,7 +166,7 @@ class Evaluation
   end
 
   def add_table_bars(array)
-    @text += "|#{array.join('|')}|\n"
+    "|#{array.join('|')}|\n"
   end
 
   def table_pattern(number)
@@ -165,7 +174,7 @@ class Evaluation
     result = pattern * number
     result[-1] = "\n"
 
-    @text += result
+    result
   end
 
   def last_element?(array, element)
