@@ -42,14 +42,16 @@ class Evaluation
     ranges_cells.each do |range_cells|
       matrix_array << range_cells[0].create_matrix_array(range_cells[1])
     end
+
     matrix_array = join_arrays(matrix_array)
     total_header = get_header_data(matrix_array, keys)
-    total_details = get_details_data(matrix_array, keys)
+    # total_details = get_details_data(matrix_array, keys)
+    matrix_array.shift
 
     Grade.new(description: total_header['description'],
               max_score: total_header['max_score'],
               score: total_header['score'],
-              details: total_details)
+              details: matrix_array)
   end
 
   def join_arrays(matrix)
@@ -109,7 +111,7 @@ class Evaluation
     @text += "#{bold('RESULT:')} #{@aproved_text.upcase}"
     break_line
     draw_table( header: ["Total", @total.score],
-                details: @total.details)
+                details: @total.details, remove: 2)
   end
 
   private
@@ -152,13 +154,13 @@ class Evaluation
      ]]
   end
 
-  def draw_table(header:, details:)
-    p details.to_a
+  def draw_table(header:, details:, remove: 0)
     table = ''
-    
     table += add_table_bars(header)
     table += table_pattern(header.length)
+  
     details.each do |detail|
+      detail = remove_element(detail, remove) if remove.positive?
       table += add_table_bars(detail)
     end
 
@@ -179,6 +181,12 @@ class Evaluation
 
   def last_element?(array, element)
     array.index(element) == array.length - 1
+  end
+
+  def remove_element(array, index)
+    a = array.dup
+    a.delete_at(index)
+    a
   end
 
   def break_line
