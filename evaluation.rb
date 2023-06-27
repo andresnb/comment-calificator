@@ -4,22 +4,26 @@ require_relative 'cell'
 class Evaluation
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :description, :scale, :aproval_percent,
-                :notes
+                :notes, :aproval_score, :explanation
 
-  def initialize(title)
-    @total = total
-    @dev_skills = dev_skills
-    @user_stories = user_stories
-    @optional = optional
+  def initialize(title = '')
+    @total = Grade.new
+    @dev_skills = Grade.new
+    @user_stories = Grade.new
+    @optional = Grade.new
     @title = title
     @description = load_description
     @scale = load_scale
     @aproval_percent = 0.6
+    @aproval_score = 0
     @notes = []
+    @explanation = ''
   end
 
   def aproved?
-    @total.score >= @total.max_score * @aproval_percent
+    @aproval_score = @total.max_score * @aproval_percent
+    @explanation = load_explanation
+    @total.score >= @aproval_score
   end
 
   def assign_totals(matrixes:, keys:, sheet:)
@@ -87,6 +91,10 @@ class Evaluation
 
   def load_description
     "This rubic breaks the #{@title} into several key objectives. Each one of the goals is scored with the scales listed in the table below."
+  end
+
+  def load_explanation
+    "To pass, the student needs at least #{@aproval_score} (**total of #{@total.max_score} points + #{@optional.max_score} bonus points**)"
   end
 
   def load_scale

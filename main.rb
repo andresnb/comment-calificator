@@ -20,7 +20,7 @@ def main
   (1..total_students).each do |student|
     step = student - 1
     student_column = student_starter_column + step
-    evaluation = Evaluation.new
+    evaluation = Evaluation.new('Ruby Individual Evaluation')
     student = Student.new
 
     student.name = evaluations.cell(Cell.integer_to_letter(student_column), 11)
