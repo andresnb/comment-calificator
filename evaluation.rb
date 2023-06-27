@@ -113,7 +113,7 @@ class Evaluation
     draw_table(header: ['Total', @total.score],
                details: @total.details, remove: 2)
     break_line(2)
-    @text += "#{bold('DETAILS')}"
+    @text += bold('DETAILS').to_s
     break_line
     draw_table(header: [@dev_skills.description, 'Max Score', 'Your Score'],
                details: @dev_skills.details.push(['TOTAL', [@dev_skills.max_score, @dev_skills.score]]))
@@ -125,7 +125,7 @@ class Evaluation
     draw_table(header: [@optional.description, 'Max Score', 'Your Score'],
                details: @optional.details.push(['TOTAL', [@optional.max_score, @optional.score]]))
     break_line(2)
-    @text += "#{bold('NOTES')}"
+    @text += bold('NOTES').to_s
     break_line(2)
     @text += print_notes(get_notes)
   end

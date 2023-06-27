@@ -55,6 +55,7 @@ class Cell
   end
 
   def self.letter_to_integer(string)
+
     string.upcase!
     result = 0
     base = 26

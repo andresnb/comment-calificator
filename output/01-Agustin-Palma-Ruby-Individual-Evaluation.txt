@@ -112,5 +112,5 @@ To pass, the student needs at least 30.0 (**total of 50 points + 8 bonus points*
 
 **NOTES**
 
-- La tabla de scores no estaba en orden `DESC`
-- Muy buen proyecto, felicidades!
+- sadfasdf
+- sdfasf
