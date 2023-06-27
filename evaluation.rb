@@ -4,11 +4,17 @@ require_relative 'cell'
 class Evaluation
   attr_accessor :dev_skills, :user_stories, :optional, :total
 
-  def initialize(total = Grade.new, dev_skills = Grade.new, user_stories = Grade.new, optional = Grade.new)
+  def initialize(title)
     @total = total
     @dev_skills = dev_skills
     @user_stories = user_stories
     @optional = optional
+    @title = title
+    @description = load_description
+    @scale = load_scale
+    @aproval_percent = 0.6
+    @student = Student.new
+    @notes = []
   end
 
   def assign_totals(matrixes:, keys:, sheet:)
@@ -70,5 +76,53 @@ class Evaluation
     end
 
     details
+  end
+
+  private
+
+  def load_description
+    "This rubic breaks the #{@title} into several key objectives. Each one of the goals is scored with the scales listed in the table below."
+  end
+
+  def load_scale
+    {
+      skills: [
+        {
+          name: 'Dev Skills',
+          metric: {
+            '0' => 'Not applied',
+            '1' => 'Barely applied',
+            '2' => 'Somewhat applied',
+            '3' => 'Decently applied',
+            '4' => 'Mostly applied',
+            '5' => 'Correctly applied'
+          }
+        },
+        {
+          name: 'User Stories',
+          metric: {
+            '0' => 'Not applied',
+            '1' => 'Applied but with glitches',
+            '2' => 'Correctly applied'
+          }
+        },
+        {
+          name: 'Critical User Stories',
+          metric: {
+            '0' => 'Not applied',
+            '1' => 'Applied but not working',
+            '2' => 'Applied but with glitches',
+            '3' => 'Correctly applied'
+          }
+        },
+        {
+          name: 'Non Critical Features',
+          metric: {
+            '0' => 'Not applied',
+            '1' => 'Applied'
+          }
+        }
+      ]
+    }
   end
 end
