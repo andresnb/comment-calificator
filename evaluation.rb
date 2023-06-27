@@ -211,10 +211,6 @@ class Evaluation
     result
   end
 
-  def last_element?(array, element)
-    array.index(element) == array.length - 1
-  end
-
   def remove_element(array, index)
     a = array.dup
     a.delete_at(index)
