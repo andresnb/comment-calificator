@@ -123,10 +123,29 @@ class Evaluation
     draw_table( header: [@optional.description, "Max Score", "Your Score"],
       details: @optional.details.push(["TOTAL", [@optional.max_score, @optional.score]]))
     break_line
-                
+    @text += "#{bold("NOTES")}"
+    break_line
+    @text += print_notes(get_notes())
+        
   end
 
   private
+
+  def print_notes(notes)
+    note_txt = ""
+    notes.each do |note|
+      note_txt += "- #{note}\n"
+    end
+    
+    @text += note_txt
+  end
+
+  def get_notes
+    puts "Give the students some insights, write a note!"
+    puts ">"
+    input = gets(":q\n").chomp(":q\n")
+    input.split("\n")
+  end
 
   def load_description
     "This rubic breaks the #{@title} into several key objectives. Each one of the goals is scored with the scales listed in the table below."
