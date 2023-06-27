@@ -112,6 +112,18 @@ class Evaluation
     break_line
     draw_table( header: ["Total", @total.score],
                 details: @total.details, remove: 2)
+    break_line
+    @text += "#{bold("DETAILS")}"
+    draw_table( header: [@dev_skills.description, "Max Score", "Your Score"],
+                details: @dev_skills.details.push(["TOTAL", [@dev_skills.max_score, @dev_skills.score]]))
+    break_line
+    draw_table( header: [@user_stories.description, "Max Score", "Your Score"],
+      details: @user_stories.details.push(["TOTAL", [@user_stories.max_score, @user_stories.score]]))
+    break_line
+    draw_table( header: [@optional.description, "Max Score", "Your Score"],
+      details: @optional.details.push(["TOTAL", [@optional.max_score, @optional.score]]))
+    break_line
+                
   end
 
   private
