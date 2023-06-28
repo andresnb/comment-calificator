@@ -8,7 +8,7 @@ This rubic breaks the Ruby Individual Evaluation into several key objectives. Ea
 |Critical User Stories|Not applied|Applied but not working|Applied but with glitches|Correctly applied|
 |Non Critical Features|Not applied|Applied|
 
-To pass, the student needs at least 35.0 (**total of 50 points + 8 bonus points**)
+To pass, the student needs at least 35 (**total of 50 points + 8 bonus points**)
 
 **STUDENT:** DANTE VASQUEZ
 **RESULT:** APROVED
@@ -16,8 +16,8 @@ To pass, the student needs at least 35.0 (**total of 50 points + 8 bonus points*
 |Total|47|
  -- | -- 
 |Dev skills|20|
-|User stories|30|
-|Optionals|8|
+|User stories|26|
+|Optionals|1|
 
 **DETAILS**
 |Dev skills|Max Score|Your Score|

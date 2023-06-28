@@ -111,7 +111,7 @@ class Evaluation
     @text += "#{bold('RESULT:')} #{@aproved_text.upcase}"
     break_line(2)
     draw_table(header: ['Total', @total.score],
-               details: @total.details, remove: 2)
+               details: @total.details, remove_index: 1)
     break_line(2)
     @text += bold('DETAILS').to_s
     break_line
@@ -186,13 +186,13 @@ class Evaluation
      ]]
   end
 
-  def draw_table(header:, details:, remove: 0)
+  def draw_table(header:, details:, remove_index: nil)
     table = ''
     table += add_table_bars(header)
     table += table_pattern(header.length)
 
     details.each do |detail|
-      detail = remove_element(detail, remove) if remove.positive?
+      detail = remove_element(detail, remove_index) unless remove_index.nil?
       table += add_table_bars(detail)
     end
 
