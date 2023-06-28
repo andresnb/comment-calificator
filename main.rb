@@ -24,10 +24,10 @@ def main
     student = Student.new
 
     student.name = evaluations.cell(Cell.integer_to_letter(student_column), 10)
-    totals_student = "#{Cell.integer_to_letter(student_column)}5:#{Cell.integer_to_letter(student_column)}8"
-    dev_skills_student = "#{Cell.integer_to_letter(student_column)}11:#{Cell.integer_to_letter(student_column)}15"
-    user_stories_student = "#{Cell.integer_to_letter(student_column)}17:#{Cell.integer_to_letter(student_column)}29"
-    optional_student = "#{Cell.integer_to_letter(student_column)}31:#{Cell.integer_to_letter(student_column)}33"
+    totals_student = get_student_range(Cell.integer_to_letter(student_column), totals_matrix)
+    dev_skills_student = get_student_range(Cell.integer_to_letter(student_column), dev_skills_matrix)
+    user_stories_student = get_student_range(Cell.integer_to_letter(student_column), user_stories_matrix)
+    optional_student = get_student_range(Cell.integer_to_letter(student_column), optional_matrix)
 
     evaluation.total = evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys,
                                                 sheet: evaluations)
@@ -43,6 +43,11 @@ def main
 
     create_evaluation_file(evaluation, student_index)
   end
+end
+
+def get_student_range(column, interval)
+  top_row, bottom_row = interval.scan(/\d+/).map(&:to_i)
+  "#{column}#{top_row}:#{column}#{bottom_row}"
 end
 
 def get_cell_value(cell, sheet)
