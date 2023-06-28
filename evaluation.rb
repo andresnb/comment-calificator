@@ -15,7 +15,7 @@ class Evaluation
     @title = title
     @description = load_description
     @scale = load_scale
-    @aproval_percent = 0.6
+    @aproval_percent = 0.7
     @aproval_score = 0
     @aproved_text = 'NOT APROVED'
     @notes = []
@@ -153,7 +153,7 @@ class Evaluation
   end
 
   def load_explanation
-    "To pass, the student needs at least #{@aproval_score} (**total of #{@total.max_score} points + #{@optional.max_score} bonus points**)"
+    "To pass, the student needs at least #{@aproval_score.floor.to_i} (**total of #{@total.max_score} points + #{@optional.max_score} bonus points**)"
   end
 
   def load_scale

@@ -118,7 +118,9 @@ class Cell
 
     row_move.times do |_|
       col_move.times do |_|
-        inner_matrix << value
+        v = value
+        v = v.floor.to_i if v.is_a?(Float)
+        inner_matrix << v
         right
       end
       outer_matrix << inner_matrix
