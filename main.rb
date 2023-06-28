@@ -6,28 +6,28 @@ require_relative 'cell'
 APROVED_PERCENT = 0.6
 
 def main
-  xlsx = Roo::Spreadsheet.open('input/W4-IE-CLIvia-Generator.xlsx')
-  evaluations = xlsx.sheet('Evaluaciones')
+  xlsx = Roo::Spreadsheet.open('input/M04-W4-IE-Doable-JS.xlsx')
+  evaluations = xlsx.sheet('Evaluations')
 
   keys = %w[description max_score score]
-  total_students = evaluations.cell('C', 46)
+  total_students = evaluations.cell('C', 42)
   totals_matrix = 'A5:B8'
-  dev_skills_matrix = 'A12:B16'
-  user_stories_matrix = 'A18:B31'
-  optional_matrix = 'A33:B37'
+  dev_skills_matrix = 'A11:B15'
+  user_stories_matrix = 'A17:B29'
+  optional_matrix = 'A31:B33'
   student_starter_column = Cell.letter_to_integer('C')
 
   (1..total_students).each do |student_index|
     step = student_index - 1
     student_column = student_starter_column + step
-    evaluation = Evaluation.new('Ruby Individual Evaluation')
+    evaluation = Evaluation.new('Javascript Individual Evaluation')
     student = Student.new
 
-    student.name = evaluations.cell(Cell.integer_to_letter(student_column), 11)
+    student.name = evaluations.cell(Cell.integer_to_letter(student_column), 10)
     totals_student = "#{Cell.integer_to_letter(student_column)}5:#{Cell.integer_to_letter(student_column)}8"
-    dev_skills_student = "#{Cell.integer_to_letter(student_column)}12:#{Cell.integer_to_letter(student_column)}16"
-    user_stories_student = "#{Cell.integer_to_letter(student_column)}18:#{Cell.integer_to_letter(student_column)}31"
-    optional_student = "#{Cell.integer_to_letter(student_column)}33:#{Cell.integer_to_letter(student_column)}37"
+    dev_skills_student = "#{Cell.integer_to_letter(student_column)}11:#{Cell.integer_to_letter(student_column)}15"
+    user_stories_student = "#{Cell.integer_to_letter(student_column)}17:#{Cell.integer_to_letter(student_column)}29"
+    optional_student = "#{Cell.integer_to_letter(student_column)}31:#{Cell.integer_to_letter(student_column)}33"
 
     evaluation.total = evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys,
                                                 sheet: evaluations)
