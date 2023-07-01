@@ -5,7 +5,8 @@ require_relative 'student'
 class Evaluation
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :description, :scale, :aproval_percent,
-                :notes, :aproval_score, :explanation, :student
+                :notes, :aproval_score, :explanation, :student,
+                :aproved_text
 
   def initialize(title = '')
     @total = Grade.new
@@ -149,7 +150,7 @@ class Evaluation
   end
 
   def load_description
-    "This rubic breaks the #{@title} into several key objectives. Each one of the goals is scored with the scales listed in the table below."
+    'This rubic breaks the project into several key objectives. Each one of the goals is scored with the scales listed in the table below.'
   end
 
   def load_explanation
