@@ -1,12 +1,27 @@
 require 'roo'
+require 'google_drive'
+require 'googleauth'
 require_relative 'student'
 require_relative 'evaluation'
 require_relative 'cell'
 
-APROVED_PERCENT = 0.6
 
-def main(file)
-  xlsx = Roo::Spreadsheet.open(file)
+def main()
+  # Load the credentials JSON file
+  credentials_file = 'credentials.json'
+  credentials = Google::Auth::ServiceAccountCredentials.make_creds(
+    json_key_io: File.open(credentials_file),
+    scope: Google::Apis::DriveV3::AUTH_DRIVE
+  )
+
+  session = GoogleDrive::Session.from_credentials(credentials)
+  session.files.each do |file|
+    puts file.title
+  end
+
+  
+  raise "stop right now, thankyou very much."
+  # xlsx = Roo::Spreadsheet.open(file)
   evaluations = xlsx.sheet('Evaluations')
 
   keys = %w[description max_score score]
@@ -91,4 +106,4 @@ end
 file = ARGV.shift
 ARGV.clear
 
-main(file)
+main()
