@@ -14,10 +14,21 @@ def main
 
   session = GoogleDrive::Session.from_credentials(credentials)
 
-  cohort = select_options(["C-10", "C-11"])
+  week = "Week "
 
+  cohort = select_options(["C-10", "C-11"], "Which Cohort are you evaluating?")
+  mod = select_options(["Ruby", "HTML & CSS", "Rails", "Javascript", "React"], "Which Module are you evaluating?")
+  week += prompt_user('What is the week of the module?') do |input|
+    input.match?(/^[1-5]$/)
+  end
+  
+  confirmed = confirm_data([cohort, mod, week])
 
-  puts cohort
+  if(confirmed)
+    puts "all ok"
+  else
+    puts "no, again"
+  end
 
   raise "stop!"
   keys = %w[description max_score score]
@@ -75,8 +86,19 @@ def main
   end
 end
 
-def select_options(options)
-  option = prompt_user("Which Cohort are you evaluating?\n#{make_list(options)}") do |input|
+def confirm_data (data_array)
+
+  confirmation = prompt_user("Is this selection ok?[Y/N]\n #{data_array.join(", ")}") do |input|
+    input.match?(/^(yes|no)$/i) || input.match?(/^[yn]$/i)
+  end
+
+  return true if confirmation[0].upcase == "Y"
+
+  false
+end
+
+def select_options(options, promt)
+  option = prompt_user("#{promt}\n#{make_list(options)}") do |input|
     element = input.to_i
     input.match?(/^\d$/) & element.between?(1, options.size)
   end
