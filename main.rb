@@ -5,9 +5,7 @@ require_relative 'student'
 require_relative 'evaluation'
 require_relative 'cell'
 
-
-def main()
-  # Load the credentials JSON file
+def main
   credentials_file = 'credentials.json'
   credentials = Google::Auth::ServiceAccountCredentials.make_creds(
     json_key_io: File.open(credentials_file),
@@ -15,22 +13,32 @@ def main()
   )
 
   session = GoogleDrive::Session.from_credentials(credentials)
-  session.files.each do |file|
-    puts file.title
-  end
 
-  
-  raise "stop right now, thankyou very much."
-  # xlsx = Roo::Spreadsheet.open(file)
-  evaluations = xlsx.sheet('Evaluations')
+  cohort = select_options(["C-10", "C-11"])
 
+
+  puts cohort
+
+  raise "stop!"
   keys = %w[description max_score score]
-  total_students = prompt_user('Input Total of Students/Groups cell', default:'E44') {|input| input.match?(/\A[A-Z]+\d+\z/)}
-  totals_matrix = prompt_user('Input Totals Interval in the spreadsheet:', default:'C7:D10') {|input| input.match?(/[A-Z]+\d+:[A-Z]+\d+/)}
-  dev_skills_matrix = prompt_user('Input Dev Skills Interval in the spreadsheet:', default:'B14:D18') {|input| input.match?(/[A-Z]+\d+:[A-Z]+\d+/)}
-  user_stories_matrix = prompt_user('Input User Stories Interval in the spreadsheet:', default:'B20:D37') {|input| input.match?(/[A-Z]+\d+:[A-Z]+\d+/)}
-  optional_matrix = prompt_user('Input Bonus Stories Interval in the spreadsheet:', default:'B39:D40') {|input| input.match?(/[A-Z]+\d+:[A-Z]+\d+/)}
-  student_starter_column = prompt_user('Input the column where the 1st Score appears:', default:'E') {|input| input.match?(/^[A-Za-z]+$/)}
+  total_students = prompt_user('Input Total of Students/Groups cell', default: 'E44') do |input|
+    input.match?(/\A[A-Z]+\d+\z/)
+  end
+  totals_matrix = prompt_user('Input Totals Interval in the spreadsheet:', default: 'C7:D10') do |input|
+    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
+  end
+  dev_skills_matrix = prompt_user('Input Dev Skills Interval in the spreadsheet:', default: 'B14:D18') do |input|
+    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
+  end
+  user_stories_matrix = prompt_user('Input User Stories Interval in the spreadsheet:', default: 'B20:D37') do |input|
+    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
+  end
+  optional_matrix = prompt_user('Input Bonus Stories Interval in the spreadsheet:', default: 'B39:D40') do |input|
+    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
+  end
+  student_starter_column = prompt_user('Input the column where the 1st Score appears:', default: 'E') do |input|
+    input.match?(/^[A-Za-z]+$/)
+  end
   (1..get_cell_value(total_students, evaluations)).each do |student_index|
     step = student_index - 1
     student_column = Cell.letter_to_integer(student_starter_column) + step
@@ -67,13 +75,31 @@ def main()
   end
 end
 
-def prompt_user(prompt, error_message = "Input Error!", default:"")
+def select_options(options)
+  option = prompt_user("Which Cohort are you evaluating?\n#{make_list(options)}") do |input|
+    element = input.to_i
+    input.match?(/^\d$/) & element.between?(1, options.size)
+  end
+
+  return options[option.to_i - 1]
+end
+
+def make_list(array)
+  str = ''
+  array.each_with_index do |e, i|
+    str += "#{i + 1}. #{e}\n"
+  end
+  
+  return str.chop
+end
+
+def prompt_user(prompt, error_message = 'Input Error!', default: nil)
   input = ''
   prompt += " (Leave empty for default value: #{default})" unless default.nil?
   loop do
     print "#{prompt}\n>"
     input = gets.chomp.upcase.strip
-    input = default unless input.nil?
+    input = default if input.nil?
     break if yield(input)
 
     puts error_message
@@ -103,7 +129,4 @@ def create_evaluation_file(evaluation, n)
   puts "File '#{file_path}' created.\n\n"
 end
 
-file = ARGV.shift
-ARGV.clear
-
-main()
+main
