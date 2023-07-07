@@ -7,66 +7,42 @@ require_relative 'cell'
 
 def main
   credentials_file = 'credentials.json'
-  credentials = Google::Auth::ServiceAccountCredentials.make_creds(
-    json_key_io: File.open(credentials_file),
-    scope: Google::Apis::DriveV3::AUTH_DRIVE
-  )
+  session = GoogleDrive::Session.from_service_account_key(credentials_file)
+  confirmed = false
 
-  session = GoogleDrive::Session.from_credentials(credentials)
+  until confirmed
+    week = 'Week '
+    cohort = select_options(%w[C-10 C-11], 'Which Cohort are you evaluating?')
+    mod = select_options(['Ruby', 'HTML & CSS', 'Rails', 'Javascript', 'React'], 'Which Module are you evaluating?')
+    week += prompt_user('What is the week of the module?') do |input|
+      input.match?(/^[1-5]$/)
+    end
 
-  week = "Week "
-
-  cohort = select_options(["C-10", "C-11"], "Which Cohort are you evaluating?")
-  mod = select_options(["Ruby", "HTML & CSS", "Rails", "Javascript", "React"], "Which Module are you evaluating?")
-  week += prompt_user('What is the week of the module?') do |input|
-    input.match?(/^[1-5]$/)
-  end
-  
-  confirmed = confirm_data([cohort, mod, week])
-
-  if(confirmed)
-    puts "all ok"
-  else
-    puts "no, again"
+    confirmed = confirm_data([cohort, mod, week])
   end
 
-  raise "stop!"
+  file = get_file(cohort, mod, week, session)
+
+  sheet = file.worksheet_by_title("Evaluations")
+
+  description_cell = 'C7'
+  student_cell = 'E4'
+  total_students = sheet['E44'].to_i
+
   keys = %w[description max_score score]
-  total_students = prompt_user('Input Total of Students/Groups cell', default: 'E44') do |input|
-    input.match?(/\A[A-Z]+\d+\z/)
-  end
-  totals_matrix = prompt_user('Input Totals Interval in the spreadsheet:', default: 'C7:D10') do |input|
-    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
-  end
-  dev_skills_matrix = prompt_user('Input Dev Skills Interval in the spreadsheet:', default: 'B14:D18') do |input|
-    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
-  end
-  user_stories_matrix = prompt_user('Input User Stories Interval in the spreadsheet:', default: 'B20:D37') do |input|
-    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
-  end
-  optional_matrix = prompt_user('Input Bonus Stories Interval in the spreadsheet:', default: 'B39:D40') do |input|
-    input.match?(/[A-Z]+\d+:[A-Z]+\d+/)
-  end
-  student_starter_column = prompt_user('Input the column where the 1st Score appears:', default: 'E') do |input|
-    input.match?(/^[A-Za-z]+$/)
-  end
-  (1..get_cell_value(total_students, evaluations)).each do |student_index|
-    step = student_index - 1
-    student_column = Cell.letter_to_integer(student_starter_column) + step
-    title = evaluations.cell('A', 1)
-    evaluation = Evaluation.new(title)
+
+  (1..total_students).each do |student_index|
+    evaluation = Evaluation.new(sheet['A1'])
     student = Student.new
-    student.name = evaluations.cell(Cell.integer_to_letter(student_column), 4)
-    totals_student = get_student_range(Cell.integer_to_letter(student_column), totals_matrix)
-    dev_skills_student = get_student_range(Cell.integer_to_letter(student_column), dev_skills_matrix)
-    user_stories_student = get_student_range(Cell.integer_to_letter(student_column), user_stories_matrix)
-    optional_student = get_student_range(Cell.integer_to_letter(student_column), optional_matrix)
+    student.name = sheet[student_cell]
 
     print "Evaluating #{student.name}\n"
 
     evaluation.total = evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys,
                                                 sheet: evaluations)
     puts "Calculating Totals [#{totals_matrix}]..."
+    
+    raise "stop!"
     evaluation.dev_skills = evaluation.assign_totals(matrixes: [dev_skills_matrix, dev_skills_student], keys: keys,
                                                      sheet: evaluations)
     puts "Calculating Dev Skills [#{dev_skills_matrix}]..."
@@ -86,13 +62,69 @@ def main
   end
 end
 
-def confirm_data (data_array)
+def get_file(cohort, mod, week, session)
+  week = week.gsub(' ', '_')
+  mod = mod.gsub(' ', '_')
 
-  confirmation = prompt_user("Is this selection ok?[Y/N]\n #{data_array.join(", ")}") do |input|
+  modulos = {
+    'Ruby' => {
+      'folder' => 'Module_01-Ruby',
+      'projects' => {
+        'Week_1' => { name: 'CalenCLI', type: 'EP' },
+        'Week_2' => { name: 'Pokemon_Ruby', type: 'EP' },
+        'Week_3' => { name: 'CLIn_Boards', type: 'EP' },
+        'Week_4' => { name: 'CLIvia_Generator', type: 'IP' }
+      }
+    },
+    'HTML_&_CSS' => {
+      'folder' => 'Module_02-HTML&CSS',
+      'projects' => {
+        'Week_1' => { name: 'Codeable_UI', type: 'IP' },
+        'Week_2' => { name: 'Codeable_UI', type: 'IP' }
+      }
+    },
+    'Rails' => {
+      'folder' => 'Module_03-Rails',
+      'projects' => {
+        'Week_1' => { name: 'Insights', type: 'EP' },
+        'Week_2' => { name: 'Music_Store', type: 'EP' },
+        'Week_3' => { name: 'Somesplash', type: 'EP' },
+        'Week_4' => { name: 'Critics_RC', type: 'EP' },
+        'Week_5' => { name: 'Tweetable', type: 'IP' }
+      }
+    },
+    'Javascript' => {
+      'folder' => 'Module_04-Javascript',
+      'projects' => {
+        'Week_1' => { name: 'Easter_Eggs', type: 'EP' },
+        'Week_2' => { name: 'Keepable_JS', type: 'EP' },
+        'Week_3' => { name: 'JS_Contactable', type: 'EP' },
+        'Week_4' => { name: 'JS_Doable', type: 'IP' }
+      }
+    },
+    'React' => {
+      'folder' => 'Module_05-React',
+      'projects' => {
+        'Week_1' => { name: 'Expensable_Calculator', type: 'EP' },
+        'Week_2' => { name: 'Expensable_Calculator_Add_On', type: 'EP' },
+        'Week_3' => { name: 'Github_Stats', type: 'EP' },
+        'Week_4' => { name: 'Eatable', type: 'EP' },
+        'Week_5' => { name: 'Eatable_2', type: 'IP' }
+      }
+    }
+  }
+  cohort_folder = session.file_by_title(cohort)
+  module_folder = cohort_folder.file_by_title(modulos[mod]["folder"])
+  
+  module_folder.file_by_title("#{week}-#{modulos[mod]['projects'][week][:type]}-#{modulos[mod]['projects'][week][:name]}")
+end
+
+def confirm_data(data_array)
+  confirmation = prompt_user("Is this selection ok?[Y/N]\n #{data_array.join(', ')}") do |input|
     input.match?(/^(yes|no)$/i) || input.match?(/^[yn]$/i)
   end
 
-  return true if confirmation[0].upcase == "Y"
+  return true if confirmation[0].upcase == 'Y'
 
   false
 end
@@ -103,7 +135,7 @@ def select_options(options, promt)
     input.match?(/^\d$/) & element.between?(1, options.size)
   end
 
-  return options[option.to_i - 1]
+  options[option.to_i - 1]
 end
 
 def make_list(array)
@@ -111,8 +143,8 @@ def make_list(array)
   array.each_with_index do |e, i|
     str += "#{i + 1}. #{e}\n"
   end
-  
-  return str.chop
+
+  str.chop
 end
 
 def prompt_user(prompt, error_message = 'Input Error!', default: nil)
@@ -128,17 +160,6 @@ def prompt_user(prompt, error_message = 'Input Error!', default: nil)
   end
 
   input
-end
-
-def get_student_range(column, interval)
-  top_row, bottom_row = interval.scan(/\d+/).map(&:to_i)
-  "#{column}#{top_row}:#{column}#{bottom_row}"
-end
-
-def get_cell_value(cell, sheet)
-  col, row = cell.scan(/\d+|[A-Za-z]+/)
-  p col, row
-  sheet.cell(col, row.to_i)
 end
 
 def create_evaluation_file(evaluation, n)
