@@ -33,27 +33,7 @@ class Evaluation
     @total.score >= @aproval_score
   end
 
-  def assign_totals(matrixes:, keys:, sheet:)
-    ranges_cells = []
-    matrixes.each do |matrix|
-      ranges_cells << Cell.separate_matrix(matrix, sheet)
-    end
-
-    matrix_array = []
-    ranges_cells.each do |range_cells|
-      matrix_array << range_cells[0].create_matrix_array(range_cells[1])
-    end
-
-    matrix_array = join_arrays(matrix_array)
-    total_header = get_header_data(matrix_array, keys)
-    # total_details = get_details_data(matrix_array, keys)
-    matrix_array.shift
-
-    Grade.new(description: total_header['description'],
-              max_score: total_header['max_score'],
-              score: total_header['score'],
-              details: matrix_array)
-  end
+  def grade_student(description_cell, student_cell); end
 
   def join_arrays(matrix)
     return if matrix.length == 1

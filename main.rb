@@ -23,35 +23,23 @@ def main
 
   file = get_file(cohort, mod, week, session)
 
-  sheet = file.worksheet_by_title("Evaluations")
+  sheet = file.worksheet_by_title('Evaluations')
 
-  description_cell = 'C7'
-  student_cell = 'E4'
-  total_students = sheet['E44'].to_i
+  description_cell = Cell.new('C7', sheet)
+  student_cell = Cell.new('E4', sheet)
+  total_students = Cell.new('E44', sheet).value
 
   keys = %w[description max_score score]
 
   (1..total_students).each do |student_index|
-    evaluation = Evaluation.new(sheet['A1'])
+    evaluation = Evaluation.new(Cell.new('A1', sheet).value)
     student = Student.new
-    student.name = sheet[student_cell]
+    student.name = student_cell.value
+    student_cell.down
 
     print "Evaluating #{student.name}\n"
 
-    evaluation.total = evaluation.assign_totals(matrixes: [totals_matrix, totals_student], keys: keys,
-                                                sheet: evaluations)
-    puts "Calculating Totals [#{totals_matrix}]..."
-    
-    raise "stop!"
-    evaluation.dev_skills = evaluation.assign_totals(matrixes: [dev_skills_matrix, dev_skills_student], keys: keys,
-                                                     sheet: evaluations)
-    puts "Calculating Dev Skills [#{dev_skills_matrix}]..."
-    evaluation.user_stories = evaluation.assign_totals(matrixes: [user_stories_matrix, user_stories_student],
-                                                       keys: keys, sheet: evaluations)
-    puts "Calculating User Stories [#{user_stories_matrix}]..."
-    evaluation.optional = evaluation.assign_totals(matrixes: [optional_matrix, optional_student], keys: keys,
-                                                   sheet: evaluations)
-    puts "Calculating Bonus Stories [#{optional_matrix}]..."
+    evaluation.grade_student(description_cell, student_cell)
 
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
@@ -114,8 +102,8 @@ def get_file(cohort, mod, week, session)
     }
   }
   cohort_folder = session.file_by_title(cohort)
-  module_folder = cohort_folder.file_by_title(modulos[mod]["folder"])
-  
+  module_folder = cohort_folder.file_by_title(modulos[mod]['folder'])
+
   module_folder.file_by_title("#{week}-#{modulos[mod]['projects'][week][:type]}-#{modulos[mod]['projects'][week][:name]}")
 end
 

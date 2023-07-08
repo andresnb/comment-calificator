@@ -1,19 +1,12 @@
 require 'roo'
+require 'google_drive'
 
 class Cell
   attr_accessor :row, :column, :sheet
 
-  def initialize(column = 1, row = 1, sheet)
-    if sheet.is_a?(Cell)
-      cell = sheet
-      @column = cell.column
-      @row = cell.row
-      @sheet = cell.sheet
-    else
-      @row = row
-      @column = column
-      @sheet = sheet
-    end
+  def initialize(coordinate, sheet)
+    @column, @row = separate_coordinate(coordinate)
+    @sheet = sheet
   end
 
   def self.value(column, row, sheet)
@@ -26,7 +19,7 @@ class Cell
     cell.dup
   end
 
-  def self.separate_matrix(matrix, sheet)
+  def separate_matrix(matrix, sheet)
     top_left, bottom_right = matrix.split(':')
     r, c = separate_coordinate(top_left)
     top_left_cell = Cell.new(r, c, sheet)
@@ -36,72 +29,44 @@ class Cell
     [top_left_cell, bottom_right_cell]
   end
 
-  def self.separate_coordinate(coordinate)
+  def separate_coordinate(coordinate)
     column = coordinate[/[A-Z]+/]
     row = coordinate[/\d+/].to_i
     [column, row]
   end
 
-  def self.integer_to_letter(n)
-    result = []
-    quotient, remainder = (n - 1).divmod(26)
-
-    while quotient >= 0
-      result.unshift(('A'.ord + remainder).chr)
-      quotient, remainder = (quotient - 1).divmod(26)
-    end
-
-    result.join
-  end
-
-  def self.letter_to_integer(string)
-    string.upcase!
-    result = 0
-    base = 26
-
-    string.each_char do |char|
-      digit_value = char.ord - 'A'.ord + 1
-      result = (result * base) + digit_value
-    end
-
-    result
-  end
-
   def value
-    return @sheet.cell(@column, @row) if @column.is_a?(String)
+    value = sheet["#{@column}#{@row}"]
+    return value.to_i if value.match?(/^\d+$/)
 
-    @sheet.cell(@row, @column)
+    value
   end
 
   def up(step = 1)
     @row -= 1 * step unless @row == 1
+
     self
   end
 
   def down(step = 1)
     @row += 1 * step
+
     self
   end
 
   def right(step = 1)
-    if @column.is_a?(String)
-      n = letter_to_integer(@column)
-      n += 1 * step
-      @column = integer_to_letter(n)
-    else
-      @column += 1 * step
-    end
+    n = letter_to_integer(@column)
+    n += 1 * step
+    @column = integer_to_letter(n)
+
     self
   end
 
   def left(step = 1)
-    if @column.is_a?(String)
-      n = letter_to_integer(@column)
-      n -= 1 * step unless n < 1
-      @column = integer_to_letter(n)
-    else
-      @column -= 1 * step unless @column < 1
-    end
+    n = letter_to_integer(@column)
+    n -= 1 * step unless n < 1
+    @column = integer_to_letter(n)
+
     self
   end
 
