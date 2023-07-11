@@ -33,7 +33,32 @@ class Evaluation
     @total.score >= @aproval_score
   end
 
-  def grade_student(description_cell, student_cell); end
+  def create_table(description_cell, student_cell, sidestep = 1)
+    header = create_matrix(description_cell, student_cell, sidestep)
+    details = []
+    details << create_matrix(description_cell, student_cell, sidestep) until description_cell.value.nil?
+
+    Grade.new(
+      description: header[0],
+      max_score: header[1],
+      score: header[2],
+      details: details
+    )
+  end
+
+  def create_matrix(left_cell, right_cell, step)
+    inner = []
+
+    inner << left_cell.value
+    left_cell.right(step)
+    inner << left_cell.value
+    inner << right_cell.value
+    left_cell.left(step)
+    left_cell.down
+    right_cell.down
+
+    inner
+  end
 
   def join_arrays(matrix)
     return if matrix.length == 1

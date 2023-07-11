@@ -25,28 +25,45 @@ def main
 
   sheet = file.worksheet_by_title('Evaluations')
 
-  description_cell = Cell.new('C7', sheet)
-  student_cell = Cell.new('E4', sheet)
+  description_cell_start = 'C7'
+  description_cell = Cell.new(description_cell_start, sheet)
+  student_cell_start = 'E4'
+  student_cell = Cell.new(student_cell_start, sheet)
   total_students = Cell.new('E44', sheet).value
-
-  keys = %w[description max_score score]
 
   (1..total_students).each do |student_index|
     evaluation = Evaluation.new(Cell.new('A1', sheet).value)
     student = Student.new
     student.name = student_cell.value
-    student_cell.down
+    student_cell.down(3)
 
     print "Evaluating #{student.name}\n"
 
-    evaluation.grade_student(description_cell, student_cell)
 
+    evaluation.total = evaluation.create_table(description_cell, student_cell)
+    description_cell.down(3)
+    description_cell.left
+    student_cell.down(3)
+
+    evaluation.dev_skills = evaluation.create_table(description_cell, student_cell, 2)
+    description_cell.down
+    student_cell.down
+
+    evaluation.user_stories = evaluation.create_table(description_cell, student_cell)
+    evaluation.optional = evaluation.create_table(description_cell, student_cell)
+
+
+    pp evaluation
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.aproved_text.downcase}!"
 
     puts 'Creating text file...'
     create_evaluation_file(evaluation, student_index)
+
+    description_cell = Cell.new(description_cell_start, sheet)
+    student_cell = Cell.new(student_cell_start, sheet)
+    student_cell.right(student_index)
   end
 end
 
@@ -108,7 +125,7 @@ def get_file(cohort, mod, week, session)
 end
 
 def confirm_data(data_array)
-  confirmation = prompt_user("Is this selection ok?[Y/N]\n #{data_array.join(', ')}") do |input|
+  confirmation = prompt_user("Is this selection ok?[Y/N]\n #{data_array.join(', ')}", default: 'y') do |input|
     input.match?(/^(yes|no)$/i) || input.match?(/^[yn]$/i)
   end
 
@@ -135,13 +152,12 @@ def make_list(array)
   str.chop
 end
 
-def prompt_user(prompt, error_message = 'Input Error!', default: nil)
+def prompt_user(prompt, error_message: 'Input Error!', default: nil)
   input = ''
-  prompt += " (Leave empty for default value: #{default})" unless default.nil?
   loop do
     print "#{prompt}\n>"
     input = gets.chomp.upcase.strip
-    input = default if input.nil?
+    input = default if input.empty?
     break if yield(input)
 
     puts error_message

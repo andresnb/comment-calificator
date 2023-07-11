@@ -2,9 +2,10 @@ require 'roo'
 require 'google_drive'
 
 class Cell
-  attr_accessor :row, :column, :sheet
+  attr_accessor :coordinate, :row, :column, :sheet
 
   def initialize(coordinate, sheet)
+    @coordinate = coordinate
     @column, @row = separate_coordinate(coordinate)
     @sheet = sheet
   end
@@ -38,18 +39,21 @@ class Cell
   def value
     value = sheet["#{@column}#{@row}"]
     return value.to_i if value.match?(/^\d+$/)
+    return nil if value == ''
 
     value
   end
 
   def up(step = 1)
     @row -= 1 * step unless @row == 1
+    update_coordinate
 
     self
   end
 
   def down(step = 1)
     @row += 1 * step
+    update_coordinate
 
     self
   end
@@ -58,6 +62,7 @@ class Cell
     n = letter_to_integer(@column)
     n += 1 * step
     @column = integer_to_letter(n)
+    update_coordinate
 
     self
   end
@@ -66,8 +71,13 @@ class Cell
     n = letter_to_integer(@column)
     n -= 1 * step unless n < 1
     @column = integer_to_letter(n)
+    update_coordinate
 
     self
+  end
+
+  def update_coordinate
+    @coordinate = "#{@column}#{@row}"
   end
 
   def same?(other_cell)
