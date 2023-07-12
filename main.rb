@@ -39,7 +39,6 @@ def main
 
     print "Evaluating #{student.name}\n"
 
-
     evaluation.total = evaluation.create_table(description_cell, student_cell)
     description_cell.down(3)
     description_cell.left
@@ -49,11 +48,12 @@ def main
     description_cell.down
     student_cell.down
 
-    evaluation.user_stories = evaluation.create_table(description_cell, student_cell)
-    evaluation.optional = evaluation.create_table(description_cell, student_cell)
+    evaluation.user_stories = evaluation.create_table(description_cell, student_cell, 2)
+    description_cell.down
+    student_cell.down
 
+    evaluation.optional = evaluation.create_table(description_cell, student_cell, 2)
 
-    pp evaluation
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.aproved_text.downcase}!"

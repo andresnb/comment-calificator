@@ -8,7 +8,7 @@ This rubic breaks the project into several key objectives. Each one of the goals
 |Critical User Stories|Not applied|Applied but not working|Applied but with glitches|Correctly applied|
 |Non Critical Features|Not applied|Applied|
 
-To pass, the student needs at least 35 (**total of 50 points +  bonus points**)
+To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
 
 **STUDENT:** TEAM 6
 **RESULT:** NOT APROVED
@@ -30,28 +30,27 @@ To pass, the student needs at least 35 (**total of 50 points +  bonus points**)
 
 |User stories|Max Score|Your Score|
  -- | -- | -- 
-|Create an Entity Relationship Diagram (ERD)||0|
-|Create the database and tables||0|
-|Populate your tables||0|
-|Welcome message and instructions should appear first when the program starts||0|
-|Te user can see a list of options to choose from||0|
-|The 'menu' command should show Te user  the list of options||0|
-|Te user can quit the program||0|
-|Option 1 - The user can see the list of restaurants filter by category or city||0|
-|Option 2 - The user can see the list of unique dishes included||0|
-|Option 3 - The user can see the list with the number and distribution of clients group by age, gender, occupation or nationality||0|
-|Option 4 - The user can see the top 10 restaurants by the number of visitors||0|
-|Option 5 - The user can see the top 10 restaurants by the sum of sales||0|
-|Option 6 - The user can see the top 10 restaurants by the average expense of their clients||0|
-|Option 7 - The user can see the average consumer expense group by age, gender, occupation or nationality||0|
-|Option 8 - The user can see the total sales of all the restaurants grouped by month||0|
-|Option 9 - The user can see the list of dishes and the restaurant where you can find it at a lower price||0|
-|Option 10 - The user can see the favorite dish filter by a specific age, gender, occupation or nationality||0|
-|TOTAL||0|
+|Create an Entity Relationship Diagram (ERD)|3|0|
+|Create the database and tables|1|0|
+|Populate your tables|2|0|
+|Welcome message and instructions should appear first when the program starts|1|0|
+|Te user can see a list of options to choose from|1|0|
+|The 'menu' command should show Te user  the list of options|1|0|
+|Te user can quit the program|1|0|
+|Option 1 - The user can see the list of restaurants filter by category or city|2|0|
+|Option 2 - The user can see the list of unique dishes included|2|0|
+|Option 3 - The user can see the list with the number and distribution of clients group by age, gender, occupation or nationality|2|0|
+|Option 4 - The user can see the top 10 restaurants by the number of visitors|2|0|
+|Option 5 - The user can see the top 10 restaurants by the sum of sales|2|0|
+|Option 6 - The user can see the top 10 restaurants by the average expense of their clients|2|0|
+|Option 7 - The user can see the average consumer expense group by age, gender, occupation or nationality|2|0|
+|Option 8 - The user can see the total sales of all the restaurants grouped by month|2|0|
+|Option 9 - The user can see the list of dishes and the restaurant where you can find it at a lower price|2|0|
+|Option 10 - The user can see the favorite dish filter by a specific age, gender, occupation or nationality|2|0|
+|TOTAL|30|0|
 
-||Max Score|Your Score|
+|Bonus stories|Max Score|Your Score|
  -- | -- | -- 
-|Bonus stories||0|
-|Exrtra points for a well presented app (Error handling, Colorized, decorated and/or animations)||0|
-|TOTAL|||
+|Exrtra points for a well presented app (Error handling, Colorized, decorated and/or animations)|2|0|
+|TOTAL|2|0|
 
