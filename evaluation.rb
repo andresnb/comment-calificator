@@ -1,8 +1,11 @@
 require_relative 'grade'
 require_relative 'cell'
 require_relative 'student'
+require_relative 'helpers/user_prompt'
 
 class Evaluation
+  include UserPrompt
+
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :description, :scale, :aproval_percent,
                 :notes, :aproval_score, :explanation, :student,
@@ -33,10 +36,10 @@ class Evaluation
     @total.score >= @aproval_score
   end
 
-  def create_table(description_cell, student_cell, sidestep = 1)
+  def create_table(description_cell, student_cell, sidestep = 1, mode: 'r')
     header = create_matrix(description_cell, student_cell, sidestep)
     details = []
-    details << create_matrix(description_cell, student_cell, sidestep) until description_cell.value.nil?
+    details << create_matrix(description_cell, student_cell, sidestep, mode) until description_cell.value.nil?
 
     Grade.new(
       description: header[0],
@@ -46,18 +49,31 @@ class Evaluation
     )
   end
 
-  def create_matrix(left_cell, right_cell, step)
+  def create_matrix(left_cell, right_cell, step, mode = 'r')
     inner = []
 
     inner << left_cell.value
+    prompt = inner.last
     left_cell.right(step)
     inner << left_cell.value
-    inner << right_cell.value
+    max = inner.last
+
+    pp right_cell, prompt, max, mode
+    inner << ask_for_value(right_cell, prompt, max, mode)
+
     left_cell.left(step)
     left_cell.down
     right_cell.down
 
     inner
+  end
+
+  def ask_for_value(cell, prompt, max, mode)
+    return cell.value if mode.downcase == 'r'
+
+    prompt_user(prompt) do |input|
+      input.positive? && input <= max
+    end
   end
 
   def join_arrays(matrix)

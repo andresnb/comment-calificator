@@ -4,6 +4,9 @@ require 'googleauth'
 require_relative 'student'
 require_relative 'evaluation'
 require_relative 'cell'
+require_relative 'helpers/user_prompt'
+
+include UserPrompt
 
 def main
   credentials_file = 'credentials.json'
@@ -19,6 +22,10 @@ def main
     end
 
     confirmed = confirm_data([cohort, mod, week])
+  end
+
+  mode = prompt_user("Use reading or writing mode? [R/W]\n", default: 'y') do |input|
+    input.match?(/^(reading|writing)$/i) || input.match?(/^[rw]$/i) || input.match?(/^(read|write)$/i)
   end
 
   file = get_file(cohort, mod, week, session)
@@ -39,20 +46,9 @@ def main
 
     print "Evaluating #{student.name}\n"
 
-    evaluation.total = evaluation.create_table(description_cell, student_cell)
-    description_cell.down(3)
-    description_cell.left
-    student_cell.down(3)
+    read_excel(evaluation, description_cell, student_cell, mode)
 
-    evaluation.dev_skills = evaluation.create_table(description_cell, student_cell, 2)
-    description_cell.down
-    student_cell.down
-
-    evaluation.user_stories = evaluation.create_table(description_cell, student_cell, 2)
-    description_cell.down
-    student_cell.down
-
-    evaluation.optional = evaluation.create_table(description_cell, student_cell, 2)
+    evaluation.optional = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
 
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
@@ -65,6 +61,21 @@ def main
     student_cell = Cell.new(student_cell_start, sheet)
     student_cell.right(student_index)
   end
+end
+
+def read_excel(evaluation, description_cell, student_cell, mode)
+  evaluation.total = evaluation.create_table(description_cell, student_cell, mode: mode)
+  description_cell.down(3)
+  description_cell.left
+  student_cell.down(3)
+
+  evaluation.dev_skills = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
+  description_cell.down
+  student_cell.down
+
+  evaluation.user_stories = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
+  description_cell.down
+  student_cell.down
 end
 
 def get_file(cohort, mod, week, session)
@@ -150,20 +161,6 @@ def make_list(array)
   end
 
   str.chop
-end
-
-def prompt_user(prompt, error_message: 'Input Error!', default: nil)
-  input = ''
-  loop do
-    print "#{prompt}\n>"
-    input = gets.chomp.upcase.strip
-    input = default if input.empty?
-    break if yield(input)
-
-    puts error_message
-  end
-
-  input
 end
 
 def create_evaluation_file(evaluation, n)
