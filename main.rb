@@ -39,20 +39,21 @@ def main
   total_students = Cell.new('E44', sheet).value
 
   (1..total_students).each do |student_index|
-    evaluation = Evaluation.new(Cell.new('A1', sheet).value)
+    evaluation = Evaluation.new(sheet)
+    evaluation.title = Cell.new('A1', sheet).value
     student = Student.new
     student.name = student_cell.value
     student_cell.down(3)
 
     print "Evaluating #{student.name}\n"
 
-    read_excel(evaluation, description_cell, student_cell, mode)
-
-    evaluation.optional = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
+    evaluate_totals(evaluation, description_cell, student_cell, mode)
 
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.aproved_text.downcase}!"
+
+    evaluation.sheet.save
 
     puts 'Creating text file...'
     create_evaluation_file(evaluation, student_index)
@@ -63,7 +64,7 @@ def main
   end
 end
 
-def read_excel(evaluation, description_cell, student_cell, mode)
+def evaluate_totals(evaluation, description_cell, student_cell, mode)
   evaluation.total = evaluation.create_table(description_cell, student_cell, mode: mode)
   description_cell.down(3)
   description_cell.left
@@ -76,6 +77,8 @@ def read_excel(evaluation, description_cell, student_cell, mode)
   evaluation.user_stories = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
   description_cell.down
   student_cell.down
+
+  evaluation.optional = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
 end
 
 def get_file(cohort, mod, week, session)

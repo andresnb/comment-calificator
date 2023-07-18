@@ -9,9 +9,9 @@ class Evaluation
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :description, :scale, :aproval_percent,
                 :notes, :aproval_score, :explanation, :student,
-                :aproved_text
+                :aproved_text, :sheet
 
-  def initialize(title = '')
+  def initialize(sheet)
     @total = Grade.new
     @dev_skills = Grade.new
     @user_stories = Grade.new
@@ -26,6 +26,8 @@ class Evaluation
     @explanation = ''
     @text = ''
     @student = Student.new
+    @memory = []
+    @sheet = sheet
   end
 
   def aproved?
@@ -57,8 +59,6 @@ class Evaluation
     left_cell.right(step)
     inner << left_cell.value
     max = inner.last
-
-    pp right_cell, prompt, max, mode
     inner << ask_for_value(right_cell, prompt, max, mode)
 
     left_cell.left(step)
@@ -69,11 +69,18 @@ class Evaluation
   end
 
   def ask_for_value(cell, prompt, max, mode)
-    return cell.value if mode.downcase == 'r'
+    if mode.downcase == 'r' || prompt.downcase == 'total' || prompt.downcase == 'dev skills' || prompt.downcase == 'user stories' || prompt.downcase == 'bonus stories'
+      @memory << { coordinate: cell.coordinate,
+                   description: prompt }
 
-    prompt_user(prompt) do |input|
-      input.positive? && input <= max
+      return cell.value
     end
+
+    score = prompt_user(prompt) do |input|
+      input.to_i.positive? && input.to_i <= max
+    end
+
+    @sheet[cell.coordinate] = score
   end
 
   def join_arrays(matrix)
