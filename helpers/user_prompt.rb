@@ -12,4 +12,13 @@ module UserPrompt
 
     input
   end
+
+  def select_options(options, promt)
+    option = prompt_user("#{promt}\n#{make_list(options)}") do |input|
+      element = input.to_i
+      input.match?(/^\d$/) & element.between?(1, options.size)
+    end
+
+    options[option.to_i - 1]
+  end
 end
