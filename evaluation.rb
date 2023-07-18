@@ -40,32 +40,36 @@ class Evaluation
 
   def evaluate_totals(data_cell, student_cell, mode)
     @total = create_table(data_cell, student_cell, mode: mode)
-    cell_movement_sequence(data_cell, {down: 3, left: 1})
+    cell_movement_sequence(data_cell, { down: 3, left: 1 })
     student_cell.down(3)
 
-    @dev_skills = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+    @dev_skills = create_table(data_cell, student_cell, 2, mode: mode)
     data_cell.down
     student_cell.down
 
-    @user_stories = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+    @user_stories = create_table(data_cell, student_cell, 2, mode: mode)
     data_cell.down
     student_cell.down
 
-    @optional = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+    @optional = create_table(data_cell, student_cell, 2, mode: mode)
   end
 
   def cell_movement_sequence(cell, sequence)
     sequence.each do |direction, steps|
-      case direction
-      when :up
-        cell.up(steps)
-      when :down
-        cell.down(steps)
-      when :left
-        cell.left(steps)
-      when :right
-        cell.right(steps) 
-      end     
+      move_cell(cell, direction, steps)
+    end
+  end
+
+  def move_cell(cell, direction, steps)
+    case direction
+    when :up
+      cell.up(steps)
+    when :down
+      cell.down(steps)
+    when :left
+      cell.left(steps)
+    when :right
+      cell.right(steps)
     end
   end
 
@@ -155,7 +159,7 @@ class Evaluation
     details
   end
 
-  def write_comment(_mode)
+  def write_comment
     @text += @title
     break_line
     line
@@ -186,9 +190,9 @@ class Evaluation
                details: @optional.details.push(['TOTAL', @optional.max_score, @optional.score]))
 
     break_line(2)
-    @text += bold('NOTES').to_s
-    break_line(2)
-    @text += print_notes(ask_fot_notes)
+    print_notes(ask_fot_notes)
+
+    @text
   end
 
   private
@@ -199,6 +203,10 @@ class Evaluation
       note_txt += "- #{note}\n"
     end
 
+    return if notes.empty?
+
+    @text += bold('NOTES').to_s
+    break_line(2)
     @text += note_txt
   end
 

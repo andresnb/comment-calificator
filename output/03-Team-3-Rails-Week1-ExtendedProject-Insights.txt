@@ -13,11 +13,11 @@ To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
 **STUDENT:** TEAM 3
 **RESULT:** NOT APROVED
 
-|Total|4|
+|Total|22|
  -- | -- 
 |Dev skills|4|
-|User stories|0|
-|Bonus stories|0|
+|User stories|17|
+|Bonus stories|1|
 
 **DETAILS**
 |Dev Skills|Max Score|Your Score|
@@ -47,10 +47,10 @@ To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
 |Option 8 - The user can see the total sales of all the restaurants grouped by month|2|1|
 |Option 9 - The user can see the list of dishes and the restaurant where you can find it at a lower price|2|1|
 |Option 10 - The user can see the favorite dish filter by a specific age, gender, occupation or nationality|2|1|
-|TOTAL|30|0|
+|TOTAL|30|17|
 
 |Bonus stories|Max Score|Your Score|
  -- | -- | -- 
 |Exrtra points for a well presented app (Error handling, Colorized, decorated and/or animations)|2|1|
-|TOTAL|2|0|
+|TOTAL|2|1|
 
