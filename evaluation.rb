@@ -38,10 +38,41 @@ class Evaluation
     @total.score >= @aproval_score
   end
 
-  def create_table(description_cell, student_cell, sidestep = 1, mode: 'r')
-    header = create_matrix(description_cell, student_cell, sidestep)
+  def evaluate_totals(data_cell, student_cell, mode)
+    @total = create_table(data_cell, student_cell, mode: mode)
+    cell_movement_sequence(data_cell, {down: 3, left: 1})
+    student_cell.down(3)
+
+    @dev_skills = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+    data_cell.down
+    student_cell.down
+
+    @user_stories = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+    data_cell.down
+    student_cell.down
+
+    @optional = evaluation.create_table(data_cell, student_cell, 2, mode: mode)
+  end
+
+  def cell_movement_sequence(cell, sequence)
+    sequence.each do |direction, steps|
+      case direction
+      when :up
+        cell.up(steps)
+      when :down
+        cell.down(steps)
+      when :left
+        cell.left(steps)
+      when :right
+        cell.right(steps) 
+      end     
+    end
+  end
+
+  def create_table(data_cell, student_cell, sidestep = 1, mode: 'r')
+    header = create_matrix(data_cell, student_cell, sidestep)
     details = []
-    details << create_matrix(description_cell, student_cell, sidestep, mode) until description_cell.value.nil?
+    details << create_matrix(data_cell, student_cell, sidestep, mode) until data_cell.value.nil?
 
     Grade.new(
       description: header[0],
@@ -124,7 +155,7 @@ class Evaluation
     details
   end
 
-  def write_comment
+  def write_comment(_mode)
     @text += @title
     break_line
     line
@@ -153,10 +184,11 @@ class Evaluation
     break_line(2)
     draw_table(header: [@optional.description, 'Max Score', 'Your Score'],
                details: @optional.details.push(['TOTAL', @optional.max_score, @optional.score]))
+
     break_line(2)
-    # @text += bold('NOTES').to_s
-    # break_line(2)
-    # @text += print_notes(get_notes)
+    @text += bold('NOTES').to_s
+    break_line(2)
+    @text += print_notes(ask_fot_notes)
   end
 
   private
@@ -170,7 +202,7 @@ class Evaluation
     @text += note_txt
   end
 
-  def get_notes
+  def ask_fot_notes
     puts "Give #{@student.name} some insights, write some notes!"
     puts '>'
     input = gets(":q\n").chomp(":q\n")

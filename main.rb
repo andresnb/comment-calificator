@@ -47,7 +47,12 @@ def main
 
     print "Evaluating #{student.name}\n"
 
-    evaluate_totals(evaluation, description_cell, student_cell, mode)
+    options = {
+      data_cell: description_cell,
+      student_cell: student_cell,
+      mode: mode
+    }
+    evaluation.evaluate_totals(options)
 
     evaluation.student = student
     evaluation.student.aproved = evaluation.aproved?
@@ -62,23 +67,6 @@ def main
     student_cell = Cell.new(student_cell_start, sheet)
     student_cell.right(student_index)
   end
-end
-
-def evaluate_totals(evaluation, description_cell, student_cell, mode)
-  evaluation.total = evaluation.create_table(description_cell, student_cell, mode: mode)
-  description_cell.down(3)
-  description_cell.left
-  student_cell.down(3)
-
-  evaluation.dev_skills = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
-  description_cell.down
-  student_cell.down
-
-  evaluation.user_stories = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
-  description_cell.down
-  student_cell.down
-
-  evaluation.optional = evaluation.create_table(description_cell, student_cell, 2, mode: mode)
 end
 
 def get_file(cohort, mod, week, session)
