@@ -7,10 +7,14 @@ require_relative 'sessions/google'
 class App
   include UserPrompt
 
+  def initialize
+    @mode = 'r'
+  end
+
   def start
     drive = Google.new('credentials.json')
 
-    cohort, mod, week, mode = prompt_file_data
+    cohort, mod, week = prompt_file_data
     file = drive.get_file(cohort, mod, week)
     sheet = file.worksheet_by_title('Evaluations')
 
@@ -37,7 +41,7 @@ class App
   def student_evaluation(student_index, description_cell, student_cell)
     evaluation = evaluation_initial_values(sheet)
 
-    evaluation.evaluate_totals(description_cell, student_cell, mode)
+    evaluation.evaluate_totals(description_cell, student_cell, @mode)
 
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.aproved_text.downcase}!"
@@ -64,11 +68,11 @@ class App
   def prompt_file_data
     cohort, mod, week = validaiton_loop
 
-    mode = prompt_user('Use reading or writing mode? [R/W]', default: 'y') do |input|
+    @mode = prompt_user('Use reading or writing mode? [R/W]', default: 'y') do |input|
       input.match?(/^(reading|writing)$/i) || input.match?(/^[rw]$/i) || input.match?(/^(read|write)$/i)
     end
 
-    [cohort, mod, week, mode]
+    [cohort, mod, week]
   end
 
   def validaiton_loop
