@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 require_relative 'grade'
 require_relative 'cell'
 require_relative 'student'
-require_relative 'helpers/user_prompt'
-require_relative 'helpers/score_scale'
-require_relative 'helpers/comment_writer'
+require_relative '../helpers/user_prompt'
+require_relative '../helpers/comment_writer'
 
 # Handles all the evaluation data including dev skills, dev stories and bonus stories
 class Evaluation
   include UserPrompt
-  include ScoreScale
   include CommetWriter
 
   attr_accessor :dev_skills, :user_stories, :optional, :total,
@@ -29,9 +29,11 @@ class Evaluation
   end
 
   def aproved?
-    aproval_score = @total.max_score * @aproval_percent
-
     @total.score >= aproval_score
+  end
+
+  def aproval_score
+    @total.max_score * @aproval_percent
   end
 
   def evaluate_totals(data_cell, student_cell, mode)
@@ -86,7 +88,7 @@ class Evaluation
   end
 
   def ask_for_value(cell, prompt, max, mode)
-    if unwritable?(prompt, mode)
+    if unwritable?(prompt, mode) || mode.downcase == 'r'
       @memory << { coordinate: cell.coordinate,
                    description: prompt }
 
@@ -101,9 +103,9 @@ class Evaluation
   end
 
   def unwritable?(prompt, _mode)
-    unwritable = ['total', 'dev skills', 'user_stories', 'bonus stories']
+    unwritable = ['total', 'dev skills', 'user stories', 'bonus stories']
 
-    unwritable.include?(prompt)
+    unwritable.include?(prompt.downcase)
   end
 
   def write_comment

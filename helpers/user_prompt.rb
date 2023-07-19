@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handles all prompts to the user
 module UserPrompt
   def prompt_user(prompt, error_message: 'Input Error!', default: nil)

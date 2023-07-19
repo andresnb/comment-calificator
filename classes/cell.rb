@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'google_drive'
 
 # Creates a cell the user can opperate between the Google Drive Worksheet
@@ -19,13 +21,13 @@ class Cell
   def move_cell(direction, steps)
     case direction
     when :up
-      @cell.up(steps)
+      up(steps)
     when :down
-      @cell.down(steps)
+      down(steps)
     when :left
-      @cell.left(steps)
+      left(steps)
     when :right
-      @cell.right(steps)
+      right(steps)
     end
   end
 

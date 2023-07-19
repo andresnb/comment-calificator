@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'table_format'
+require_relative 'score_scale'
 
 # Methods required to handle writing the evaluation
 module CommetWriter
   include TableFormat
+  include ScoreScale
 
   def write_title
     @text += @title
@@ -32,8 +36,8 @@ module CommetWriter
   end
 
   def write_result
-    aproved_text = @student.aproved ? 'APROVED' : 'NOT APROVED'
-    @text += "#{bold('RESULT:')} #{aproved_text}"
+    @student.aproved_text = @student.aproved ? 'APROVED' : 'NOT APROVED'
+    @text += "#{bold('RESULT:')} #{@student.aproved_text}"
     break_line(2)
   end
 
@@ -54,9 +58,9 @@ module CommetWriter
     break_line(2)
   end
 
-  def write_details_tables(matrix)
-    header = [matrix.description, 'Max Score', 'Your Score']
-    details = matrix.details.push(['TOTAL', matrix.max_score, matrix.score])
+  def write_details_table(grade)
+    header = [grade.description, 'Max Score', 'Your Score']
+    details = grade.details.push(['TOTAL', grade.max_score, grade.score])
     @text += draw_table(header: header, details: details)
   end
 
@@ -90,7 +94,7 @@ module CommetWriter
   end
 
   def load_explanation
-    "To pass, the student needs at least #{@aproval_score.floor.to_i}
+    "To pass, the student needs at least #{aproval_score.floor.to_i}
     (**total of #{@total.max_score} points + #{@optional.max_score} bonus points**)"
   end
 end

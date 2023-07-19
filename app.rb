@@ -1,6 +1,8 @@
-require_relative 'student'
-require_relative 'evaluation'
-require_relative 'cell'
+# frozen_string_literal: true
+
+require_relative 'classes/student'
+require_relative 'classes/evaluation'
+require_relative 'classes/cell'
 require_relative 'helpers/user_prompt'
 require_relative 'sessions/google'
 
@@ -10,42 +12,44 @@ class App
 
   def initialize
     @mode = 'r'
+    @description_cell_start = ''
+    @student_cell_start = ''
   end
 
   def start
-    drive = Google.new('credentials.json')
+    drive = GoogleSession.new('credentials.json')
 
     cohort, mod, week = prompt_file_data
     file = drive.get_file(cohort, mod, week)
     sheet = file.worksheet_by_title('Evaluations')
 
-    description_cell_start = 'C7'
-    student_cell_start = 'E4'
+    @description_cell_start = 'C7'
+    @student_cell_start = 'E4'
     total_students = Cell.new('E44', sheet).value
 
-    description_cell = Cell.new(description_cell_start, sheet)
-    student_cell = Cell.new(student_cell_start, sheet)
+    description_cell = Cell.new(@description_cell_start, sheet)
+    student_cell = Cell.new(@student_cell_start, sheet)
 
-    evaluation_loop(total_students, description_cell, student_cell)
+    evaluation_loop(total_students, description_cell, student_cell, sheet)
   end
 
-  def evaluation_loop(total_students, description_cell, student_cell)
+  def evaluation_loop(total_students, description_cell, student_cell, sheet)
     (1..total_students).each do |student_index|
-      student_evaluation(student_index, description_cell, student_cell)
+      student_evaluation(student_index, description_cell, student_cell, sheet)
 
-      description_cell = Cell.new(description_cell_start, sheet)
-      student_cell = Cell.new(student_cell_start, sheet)
+      description_cell = Cell.new(@description_cell_start, sheet)
+      student_cell = Cell.new(@student_cell_start, sheet)
       student_cell.right(student_index)
     end
   end
 
-  def student_evaluation(student_index, description_cell, student_cell)
-    evaluation = evaluation_initial_values(sheet)
+  def student_evaluation(student_index, description_cell, student_cell, sheet)
+    evaluation = evaluation_initial_values(student_cell, sheet)
 
     evaluation.evaluate_totals(description_cell, student_cell, @mode)
 
     evaluation.student.aproved = evaluation.aproved?
-    puts "Evaluation #{evaluation.aproved_text.downcase}!"
+    puts "Evaluation #{evaluation.student.aproved_text.downcase}!"
 
     evaluation.sheet.save
 
@@ -53,7 +57,7 @@ class App
     create_evaluation_file(evaluation, student_index)
   end
 
-  def evaluation_initial_values(sheet)
+  def evaluation_initial_values(student_cell, sheet)
     evaluation = Evaluation.new(sheet)
     evaluation.title = Cell.new('A1', sheet).value
     student = Student.new

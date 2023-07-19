@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # Has all the Score Scale data
 module ScoreScale
   def score_scale
     [
-      dev_skills,
-      user_stories,
-      critical_user_stories,
-      non_critical_user_stories
+      dev_skills_scale,
+      user_stories_scale,
+      critical_user_stories_scale,
+      non_critical_user_stories_scale
     ]
   end
 
-  def dev_skills
+  def dev_skills_scale
     [
       'Dev Skills',
       'Not applied',
@@ -21,7 +23,7 @@ module ScoreScale
     ]
   end
 
-  def user_stories
+  def user_stories_scale
     [
       'User Stories',
       'Not applied',
@@ -30,7 +32,7 @@ module ScoreScale
     ]
   end
 
-  def critical_user_stories
+  def critical_user_stories_scale
     [
       'Critical User Stories',
       'Not applied',
@@ -40,7 +42,7 @@ module ScoreScale
     ]
   end
 
-  def non_critical_user_stories
+  def non_critical_user_stories_scale
     [
       'Non Critical Features',
       'Not applied',

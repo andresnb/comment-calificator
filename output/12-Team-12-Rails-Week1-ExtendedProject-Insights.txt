@@ -1,23 +1,16 @@
 Rails - Week 1 - Extended Project - Insights
 --
-This rubic breaks the project into several key objectives. Each one of the goals is scored with the scales listed in the table below.
-|**SKILL**|0|1|2|3|4|5|
- -- | -- | -- | -- | -- | -- | -- 
-|Dev Skills|Not applied|Barely applied|Somewhat applied|Decently applied|Mostly applied|Correctly applied|
-|User Stories|Not applied|Applied but with glitches|Correctly applied|
-|Critical User Stories|Not applied|Applied but not working|Applied but with glitches|Correctly applied|
-|Non Critical Features|Not applied|Applied|
+This rubic breaks the project into several key objectives.
+    Each one of the goals is scored with the scales listed in the table below.
 
-To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
+
+To pass, the student needs at least 35
+    (**total of 50 points + 2 bonus points**)
 
 **STUDENT:** TEAM 12
 **RESULT:** NOT APROVED
 
-|Total|5|
- -- | -- 
-|Dev skills|5|
-|User stories|0|
-|Bonus stories|0|
+
 
 **DETAILS**
 |Dev Skills|Max Score|Your Score|

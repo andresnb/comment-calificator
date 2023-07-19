@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handles the table formatting according to GitHub table formats
 module TableFormat
   def remove_element(array, index)

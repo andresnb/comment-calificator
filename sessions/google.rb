@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'google_drive'
 require 'googleauth'
-require_relative 'helpers/cohort_files'
+require_relative '../helpers/cohort_files'
 
 # Handles Google Drive session and file formatting for this speciffic program
-class Google
-  inlcude CohortFiles
+class GoogleSession
+  include CohortFiles
   def initialize(credentials_file)
     @session = GoogleDrive::Session.from_service_account_key(credentials_file)
   end

@@ -1,31 +1,24 @@
 Rails - Week 1 - Extended Project - Insights
 --
-This rubic breaks the project into several key objectives. Each one of the goals is scored with the scales listed in the table below.
-|**SKILL**|0|1|2|3|4|5|
- -- | -- | -- | -- | -- | -- | -- 
-|Dev Skills|Not applied|Barely applied|Somewhat applied|Decently applied|Mostly applied|Correctly applied|
-|User Stories|Not applied|Applied but with glitches|Correctly applied|
-|Critical User Stories|Not applied|Applied but not working|Applied but with glitches|Correctly applied|
-|Non Critical Features|Not applied|Applied|
+This rubic breaks the project into several key objectives.
+    Each one of the goals is scored with the scales listed in the table below.
 
-To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
+
+To pass, the student needs at least 35
+    (**total of 50 points + 2 bonus points**)
 
 **STUDENT:** TEAM 2
 **RESULT:** NOT APROVED
 
-|Total|22|
- -- | -- 
-|Dev skills|4|
-|User stories|17|
-|Bonus stories|1|
+
 
 **DETAILS**
 |Dev Skills|Max Score|Your Score|
  -- | -- | -- 
 |Deliver in time (June 24)|5|1|
-|The code, html and assets are divided in files and folders according to their purpose. No trash files|5|1|
-|Work as a team using Git Flow (kanban board / multiple git branches / issues report / pull requests by task with review)|5|1|
-|Commits are well-written and communicates clearly what the coder did|5|1|
+|The code, html and assets are divided in files and folders according to their purpose. No trash files|5|2|
+|Work as a team using Git Flow (kanban board / multiple git branches / issues report / pull requests by task with review)|5|2|
+|Commits are well-written and communicates clearly what the coder did|5|3|
 |TOTAL|20|4|
 
 |User stories|Max Score|Your Score|
@@ -54,3 +47,9 @@ To pass, the student needs at least 35 (**total of 50 points + 2 bonus points**)
 |Exrtra points for a well presented app (Error handling, Colorized, decorated and/or animations)|2|1|
 |TOTAL|2|1|
 
+**NOTES**
+
+- 1
+- 1
+- 1
+- 1

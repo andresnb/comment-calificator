@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Has all the documentations of the evaluations files in the google drive folders
 module CohortFiles
   def modulos
