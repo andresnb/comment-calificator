@@ -1,3 +1,4 @@
+# Contains the grades, description, max score and details as an array
 class Grade
   attr_accessor :score, :details, :description, :max_score
 

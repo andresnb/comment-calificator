@@ -2,6 +2,7 @@ require 'google_drive'
 require 'googleauth'
 require_relative 'helpers/cohort_files'
 
+# Handles Google Drive session and file formatting for this speciffic program
 class Google
   inlcude CohortFiles
   def initialize(credentials_file)

@@ -1,3 +1,4 @@
+# Contains Student Data
 class Student
   attr_accessor :name, :aproved
 

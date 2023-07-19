@@ -4,6 +4,7 @@ require_relative 'cell'
 require_relative 'helpers/user_prompt'
 require_relative 'sessions/google'
 
+# Main Structure for App to work
 class App
   include UserPrompt
 

@@ -1,6 +1,6 @@
-require 'roo'
 require 'google_drive'
 
+# Creates a cell the user can opperate between the Google Drive Worksheet
 class Cell
   attr_accessor :coordinate, :row, :column, :sheet
 
@@ -10,14 +10,23 @@ class Cell
     @sheet = sheet
   end
 
-  def self.value(column, row, sheet)
-    return sheet.cell(column, row) if column.is_a?(String)
-
-    sheet.cell(row, column)
+  def movement_sequence(sequence)
+    sequence.each do |direction, steps|
+      move_cell(direction, steps)
+    end
   end
 
-  def self.copy(cell)
-    cell.dup
+  def move_cell(direction, steps)
+    case direction
+    when :up
+      @cell.up(steps)
+    when :down
+      @cell.down(steps)
+    when :left
+      @cell.left(steps)
+    when :right
+      @cell.right(steps)
+    end
   end
 
   def separate_matrix(matrix, sheet)
@@ -80,48 +89,11 @@ class Cell
     @coordinate = "#{@column}#{@row}"
   end
 
-  def same?(other_cell)
-    @column == other_cell.column && @row == other_cell.row
-  end
-
-  def create_matrix_array(final_cell)
-    outer_matrix = []
-    inner_matrix = []
-    col_move = column_difference(@column, final_cell.column) + 1
-    row_move = final_cell.row - @row + 1
-    row_move.times do |_|
-      col_move.times do |_|
-        v = value
-        v = v.floor.to_i if v.is_a?(Float)
-        inner_matrix << v unless v.nil?
-        right
-      end
-      outer_matrix << inner_matrix
-      inner_matrix = []
-      left(col_move)
-      down
-    end
-    outer_matrix
-  end
-
   private
 
-  def column_difference(col1, col2)
-    col1 = letter_to_integer(col1) if col1.is_a?(String)
-    col2 = letter_to_integer(col2) if col2.is_a?(String)
-
-    col2 - col1
-  end
-
-  def current_cell
-    return "#{@column}-#{@row}" if @column.is_a?(String)
-
-    "#{integer_to_letter(@column)}-#{@row}"
-  end
-
-  def integer_to_letter(n)
+  def integer_to_letter(int)
     result = []
-    quotient, remainder = (n - 1).divmod(26)
+    quotient, remainder = (int - 1).divmod(26)
 
     while quotient >= 0
       result.unshift(('A'.ord + remainder).chr)
