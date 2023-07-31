@@ -44,9 +44,13 @@ class App
   end
 
   def student_evaluation(student_index, description_cell, student_cell, sheet)
-    evaluation = evaluation_initial_values(student_cell, sheet)
+    evaluation = evaluation_initialize(student_cell, sheet)
 
     evaluation.evaluate_totals(description_cell, student_cell, @mode)
+
+    pp evaluation.memory
+
+    raise "stop right now, thankyou very much!"
 
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.student.aproved_text.downcase}!"
@@ -57,7 +61,7 @@ class App
     create_evaluation_file(evaluation, student_index)
   end
 
-  def evaluation_initial_values(student_cell, sheet)
+  def evaluation_initialize(student_cell, sheet)
     evaluation = Evaluation.new(sheet)
     evaluation.title = Cell.new('A1', sheet).value
     student = Student.new

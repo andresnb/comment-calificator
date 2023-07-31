@@ -12,8 +12,7 @@ class Evaluation
   include CommetWriter
 
   attr_accessor :dev_skills, :user_stories, :optional, :total,
-                :title, :description, :scale, :aproval_percent,
-                :student, :sheet
+                :title, :memory, :aproval_percent, :student, :sheet
 
   def initialize(sheet)
     @total = Grade.new
