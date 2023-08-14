@@ -16,9 +16,15 @@ class GoogleSession
     mod = mod.gsub(' ', '_')
 
     cohort_folder = @session.file_by_title(cohort)
-    module_folder = cohort_folder.file_by_title(modulos[mod]['folder'])
+    raise "Folder #{cohort} was not found" unless cohort_folder
 
-    module_folder.file_by_title(format_file_title(week, mod))
+    module_folder = cohort_folder.file_by_title(modulos[mod]['folder'])
+    raise "Module folder #{modulos[mod]['folder']} was not found" unless module_folder
+
+    file = module_folder.file_by_title(format_file_title(week, mod))
+    raise "File #{format_file_title(week, mod)} was not found" unless file
+
+    file
   end
 
   def format_file_title(week, mod)

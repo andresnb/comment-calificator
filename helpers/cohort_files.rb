@@ -66,8 +66,8 @@ module CohortFiles
         'Week_1' => { name: 'Expensable_Calculator', type: 'EP' },
         'Week_2' => { name: 'Expensable_Calculator_Add_On', type: 'EP' },
         'Week_3' => { name: 'Github_Stats', type: 'EP' },
-        'Week_4' => { name: 'Eatable', type: 'EP' },
-        'Week_5' => { name: 'Eatable_2', type: 'IP' }
+        'Week_4' => { name: 'Eatable_Filters', type: 'EP' },
+        'Week_5' => { name: 'React_Eatable', type: 'IP' }
       }
     }
   end
