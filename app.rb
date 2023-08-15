@@ -48,10 +48,6 @@ class App
 
     evaluation.evaluate_totals(description_cell, student_cell, @mode)
 
-    pp evaluation.memory
-
-    raise "stop right now, thankyou very much!"
-
     evaluation.student.aproved = evaluation.aproved?
     puts "Evaluation #{evaluation.student.aproved_text.downcase}!"
 
