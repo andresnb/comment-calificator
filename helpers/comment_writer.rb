@@ -36,7 +36,7 @@ module CommetWriter
   end
 
   def write_result
-    @student.aproved_text = @student.aproved ? 'APROVED' : 'NOT APROVED'
+    # @student.aproved_text = @student.aproved ? 'APROVED' : 'NOT APROVED'
     @text += "#{bold('RESULT:')} #{@student.aproved_text}"
     break_line(2)
   end

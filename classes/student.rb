@@ -9,4 +9,8 @@ class Student
     @aproved = aproved
     @aproved_text = 'NOT APROVED'
   end
+
+  def load_aproval_text(aproved)
+    @aproved_text = 'APROVED' if aproved
+  end
 end

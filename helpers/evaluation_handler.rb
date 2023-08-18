@@ -23,7 +23,7 @@ module EvaluationHandler
     evaluation.sheet.reload
     evaluation.dump_memory if @mode == 'w' || @mode == 'W'
 
-    evaluation.student.aproved = evaluation.aproved?
+    evaluation.student.load_aproval_text(evaluation.aproved?)
     puts "Evaluation #{evaluation.student.aproved_text.downcase}!"
 
     puts 'Creating text file...'
