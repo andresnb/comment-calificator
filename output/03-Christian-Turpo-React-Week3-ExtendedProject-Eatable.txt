@@ -1,0 +1,50 @@
+React - Week 3 - Extended Project - Eatable
+--
+This rubic breaks the project into several key objectives.
+    Each one of the goals is scored with the scales listed in the table below.
+
+
+To pass, the student needs at least 35
+    (**total of 50 points + 2 bonus points**)
+
+**STUDENT:** CHRISTIAN TURPO
+**RESULT:** NOT APROVED
+
+
+
+**DETAILS**
+|Dev Skills|Max Score|Your Score|
+ -- | -- | -- 
+|Deliver in time (June 24)|5|5|
+|Components are divided in their respective folders  |5|5|
+|Use Git Flow Accordingly (kanban board / multiple git branches / issues report / pull requests)|5|3|
+|Commits are well-written and communicates clearly what the coder did|5|3|
+|TOTAL|20|0|
+
+|User stories|Max Score|Your Score|
+ -- | -- | -- 
+|App is built with React reusable components.|3|3|
+|App connects to the external API to fetch data.|2|2|
+|App uses CSS in JS for the styling using Emotion.|2|1|
+|App is able to handle page refresh without losing the current state of the app (LocalStorage or SessionStorage).|3|1|
+|App handles errors by showing useful messages to the user.|1|0|
+|A user can see a list of all products currently created on the database.|3|3|
+|A user can see a product and its description.|2|0|
+|A user is able to create a new product.|3|0|
+|A user is able to edit a product.|2|0|
+|A user is able to delete a product. A modal should appear on the screen to confirm the deletion.|3|0|
+|A user can upload an image when creating a product|2|0|
+|A user can upload an edut the product image|2|0|
+|CSS should resemble figma design|2|1|
+|TOTAL|30|0|
+
+|Bonus stories|Max Score|Your Score|
+ -- | -- | -- 
+|Exrtra points for a well presented app (Error handling, CSS effects, decorated and/or animations)|2|0|
+|TOTAL|2|0|
+
+**NOTES**
+
+- Recuerda usar ramas con git
+- Solamente son visibles los platos
+- Recuerda que los componentes pueden ser usados en diferentes lugares de la app

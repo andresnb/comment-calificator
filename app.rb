@@ -25,7 +25,7 @@ class App
 
     @description_cell_start = 'C7'
     @student_cell_start = 'E4'
-    total_students = Cell.new('E44', sheet).value
+    total_students = Cell.new('D4', sheet).value
 
     description_cell = Cell.new(@description_cell_start, sheet)
     student_cell = Cell.new(@student_cell_start, sheet)
@@ -46,6 +46,8 @@ class App
   def student_evaluation(student_index, description_cell, student_cell, sheet)
     evaluation = evaluation_initialize(student_cell, sheet)
 
+    return false unless evaluation
+
     evaluation.evaluate_totals(description_cell, student_cell, @mode)
 
     evaluation.student.aproved = evaluation.aproved?
@@ -65,7 +67,9 @@ class App
     student_cell.down(3)
     evaluation.student = student
 
-    print "Evaluating #{student.name}\n"
+    input = prompt_user("Evaluating #{student.name}\n (S to skip)")
+
+    return false if input.match?(/^[sS]$/)
 
     evaluation
   end

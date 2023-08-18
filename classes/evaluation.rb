@@ -94,8 +94,8 @@ class Evaluation
       return cell.value
     end
 
-    score = prompt_user(prompt) do |input|
-      input.to_i.positive? && input.to_i <= max
+    score = prompt_user("#{prompt} [#{max}]") do |input|
+      input.to_i >= 0 && input.to_i <= max
     end
 
     @sheet[cell.coordinate] = score
