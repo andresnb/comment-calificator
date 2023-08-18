@@ -20,8 +20,8 @@ module CommetWriter
   end
 
   def write_skill_scale
-    draw_table(header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
-               details: score_scale)
+    @text += draw_table(header: [bold('SKILL'), '0', '1', '2', '3', '4', '5'],
+                        details: score_scale)
     break_line(2)
   end
 
@@ -42,8 +42,8 @@ module CommetWriter
   end
 
   def write_totals
-    draw_table(header: ['Total', @total.score],
-               details: @total.details, remove_index: 1)
+    @text += draw_table(header: ['Total', @total.score],
+                        details: @total.details, remove_index: 1)
     break_line(2)
   end
 

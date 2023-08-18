@@ -24,4 +24,13 @@ module UserPrompt
 
     options[option.to_i - 1]
   end
+
+  def make_list(array)
+    str = ''
+    array.each_with_index do |e, i|
+      str += "#{i + 1}. #{e}\n"
+    end
+
+    str.chop
+  end
 end

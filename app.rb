@@ -4,11 +4,13 @@ require_relative 'classes/student'
 require_relative 'classes/evaluation'
 require_relative 'classes/cell'
 require_relative 'helpers/user_prompt'
+require_relative 'helpers/evaluation_handler'
 require_relative 'sessions/google'
 
 # Main Structure for App to work
 class App
   include UserPrompt
+  include EvaluationHandler
 
   def initialize
     @mode = 'r'
@@ -31,47 +33,6 @@ class App
     student_cell = Cell.new(@student_cell_start, sheet)
 
     evaluation_loop(total_students, description_cell, student_cell, sheet)
-  end
-
-  def evaluation_loop(total_students, description_cell, student_cell, sheet)
-    (1..total_students).each do |student_index|
-      student_evaluation(student_index, description_cell, student_cell, sheet)
-
-      description_cell = Cell.new(@description_cell_start, sheet)
-      student_cell = Cell.new(@student_cell_start, sheet)
-      student_cell.right(student_index)
-    end
-  end
-
-  def student_evaluation(student_index, description_cell, student_cell, sheet)
-    evaluation = evaluation_initialize(student_cell, sheet)
-
-    return false unless evaluation
-
-    evaluation.evaluate_totals(description_cell, student_cell, @mode)
-
-    evaluation.student.aproved = evaluation.aproved?
-    puts "Evaluation #{evaluation.student.aproved_text.downcase}!"
-
-    evaluation.sheet.save
-
-    puts 'Creating text file...'
-    create_evaluation_file(evaluation, student_index)
-  end
-
-  def evaluation_initialize(student_cell, sheet)
-    evaluation = Evaluation.new(sheet)
-    evaluation.title = Cell.new('A1', sheet).value
-    student = Student.new
-    student.name = student_cell.value
-    student_cell.down(3)
-    evaluation.student = student
-
-    input = prompt_user("Evaluating #{student.name}\n (S to skip)")
-
-    return false if input.match?(/^[sS]$/)
-
-    evaluation
   end
 
   def prompt_file_data
@@ -114,24 +75,6 @@ class App
     return true if confirmation[0].upcase == 'Y'
 
     false
-  end
-
-  def make_list(array)
-    str = ''
-    array.each_with_index do |e, i|
-      str += "#{i + 1}. #{e}\n"
-    end
-
-    str.chop
-  end
-
-  def create_evaluation_file(evaluation, student_number)
-    file_path = filename_format(evaluation, student_number)
-    File.open(file_path, 'w') do |file|
-      file.puts evaluation.write_comment
-    end
-
-    puts "File '#{file_path}' created.\n\n"
   end
 
   def filename_format(evaluation, number)

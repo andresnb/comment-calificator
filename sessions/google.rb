@@ -15,6 +15,10 @@ class GoogleSession
     week = week.gsub(' ', '_')
     mod = mod.gsub(' ', '_')
 
+    locate_file(cohort, week, mod)
+  end
+
+  def locate_file(cohort, week, mod)
     cohort_folder = @session.file_by_title(cohort)
     raise "Folder #{cohort} was not found" unless cohort_folder
 

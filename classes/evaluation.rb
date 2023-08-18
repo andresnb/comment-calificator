@@ -5,11 +5,13 @@ require_relative 'cell'
 require_relative 'student'
 require_relative '../helpers/user_prompt'
 require_relative '../helpers/comment_writer'
+require_relative '../helpers/sheet_reader'
 
 # Handles all the evaluation data including dev skills, dev stories and bonus stories
 class Evaluation
   include UserPrompt
   include CommetWriter
+  include SheetReader
 
   attr_accessor :dev_skills, :user_stories, :optional, :total,
                 :title, :memory, :aproval_percent, :student, :sheet
@@ -64,47 +66,17 @@ class Evaluation
     )
   end
 
-  def create_matrix(left_cell, right_cell, step, mode = 'r')
-    inner = insert_cell_values(left_cell, right_cell, step, mode)
-
-    left_cell.left(step)
-    left_cell.down
-    right_cell.down
-
-    inner
-  end
-
-  def insert_cell_values(left_cell, right_cell, step, mode)
-    array = []
-    array << left_cell.value
-    prompt = array.last
-    left_cell.right(step)
-    array << left_cell.value
-    max = array.last
-    array << ask_for_value(right_cell, prompt, max, mode)
-
-    array
-  end
-
-  def ask_for_value(cell, prompt, max, mode)
-    if unwritable?(prompt, mode) || mode.downcase == 'r'
-      @memory << { coordinate: cell.coordinate,
-                   description: prompt }
-
-      return cell.value
+  def dump_memory
+    @total.details = []
+    @memory.each do |data|
+      cell_value = Cell.new(data[:coordinate], @sheet).value
+      case data[:description]
+      when 'Total'
+        @total.score = cell_value
+      else
+        @total.details << [data[:description], data[:max_score], cell_value] if total.details.length < 3
+      end
     end
-
-    score = prompt_user("#{prompt} [#{max}]") do |input|
-      input.to_i >= 0 && input.to_i <= max
-    end
-
-    @sheet[cell.coordinate] = score
-  end
-
-  def unwritable?(prompt, _mode)
-    unwritable = ['total', 'dev skills', 'user stories', 'bonus stories']
-
-    unwritable.include?(prompt.downcase)
   end
 
   def write_comment

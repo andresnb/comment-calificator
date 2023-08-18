@@ -1,16 +1,25 @@
-React - Week 3 - Extended Project - Eatable
+React - Week 5 - Extended Project - Eatable
 --
 This rubic breaks the project into several key objectives.
     Each one of the goals is scored with the scales listed in the table below.
-
+|**SKILL**|0|1|2|3|4|5|
+ -- | -- | -- | -- | -- | -- | -- 
+|Dev Skills|Not applied|Barely applied|Somewhat applied|Decently applied|Mostly applied|Correctly applied|
+|User Stories|Not applied|Applied but with glitches|Correctly applied|
+|Critical User Stories|Not applied|Applied but not working|Applied but with glitches|Correctly applied|
+|Non Critical Features|Not applied|Applied|
 
 To pass, the student needs at least 35
     (**total of 50 points + 2 bonus points**)
 
-**STUDENT:** GUSTAVO UGARTE
-**RESULT:** NOT APROVED
+**STUDENT:** ALEX MENDOZA
+**RESULT:** APROVED
 
-
+|Total|44|
+ -- | -- 
+|Dev skills|17|
+|User stories|25|
+|Bonus stories|2|
 
 **DETAILS**
 |Dev Skills|Max Score|Your Score|
@@ -18,8 +27,8 @@ To pass, the student needs at least 35
 |Deliver in time (June 24)|5|5|
 |Components are divided in their respective folders  |5|5|
 |Use Git Flow Accordingly (kanban board / multiple git branches / issues report / pull requests)|5|4|
-|Commits are well-written and communicates clearly what the coder did|5|4|
-|TOTAL|20|0|
+|Commits are well-written and communicates clearly what the coder did|5|3|
+|TOTAL|20|20|
 
 |User stories|Max Score|Your Score|
  -- | -- | -- 
@@ -27,23 +36,21 @@ To pass, the student needs at least 35
 |App connects to the external API to fetch data.|2|2|
 |App uses CSS in JS for the styling using Emotion.|2|2|
 |App is able to handle page refresh without losing the current state of the app (LocalStorage or SessionStorage).|3|3|
-|App handles errors by showing useful messages to the user.|1|0|
+|App handles errors by showing useful messages to the user.|2|2|
 |A user can see a list of all products currently created on the database.|3|3|
 |A user can see a product and its description.|2|2|
 |A user is able to create a new product.|3|3|
 |A user is able to edit a product.|2|2|
-|A user is able to delete a product. A modal should appear on the screen to confirm the deletion.|3|2|
-|A user can upload an image when creating a product|2|2|
-|A user can upload an edut the product image|2|2|
-|CSS should resemble figma design|2|2|
-|TOTAL|30|0|
+|A user is able to delete a product. A modal should appear on the screen to confirm the deletion.|3|3|
+|Image shows correctly above product|2|2|
+|CSS should resemble figma design|3|3|
+|TOTAL|30|24|
 
 |Bonus stories|Max Score|Your Score|
  -- | -- | -- 
-|Exrtra points for a well presented app (Error handling, CSS effects, decorated and/or animations)|2|0|
-|TOTAL|2|0|
+|Exrtra points for a well presented app (Error handling, CSS effects, decorated and/or animations)|2|2|
+|TOTAL|2|2|
 
 **NOTES**
 
-- Cuando borras un producto hay que refrescar para que lo saque de la lista
-- En el precio pongo 300 y me pone 3.00, los puntos decimales estan bugeados
+- good woork!
