@@ -42,7 +42,7 @@ module EvaluationHandler
 
     return evaluation if input.nil? || !input.match?(/^[sS]$/)
 
-    evaluation
+    false
   end
 
   def create_evaluation_file(evaluation, student_number)
