@@ -79,7 +79,7 @@ class Evaluation
     end
   end
 
-  def write_comment
+  def write_comment(mode)
     write_title
     write_description
     write_skill_scale
@@ -88,7 +88,7 @@ class Evaluation
     write_result
     write_totals
     write_details
-    write_notes
+    write_notes if mode.match?(/^w$/i)
 
     @text
   end

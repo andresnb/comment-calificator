@@ -38,7 +38,7 @@ module EvaluationHandler
     student_cell.down(3)
     evaluation.student = student
 
-    input = prompt_user("Evaluating #{student.name}\n (S to skip)")
+    input = prompt_user("Evaluating #{student.name}\n (S to skip)") unless @mode.match?(/^[rw]$/i)
 
     return evaluation if input.nil? || !input.match?(/^[sS]$/)
 
@@ -48,7 +48,7 @@ module EvaluationHandler
   def create_evaluation_file(evaluation, student_number)
     file_path = filename_format(evaluation, student_number)
     File.open(file_path, 'w') do |file|
-      file.puts evaluation.write_comment
+      file.puts evaluation.write_comment(@mode)
     end
 
     puts "File '#{file_path}' created.\n\n"
